@@ -1,4 +1,5 @@
 import GlobalAlerts from '@components/Shared/GlobalAlerts';
+import Navbar from '@components/Shared/Navbar';
 import BottomNavigation from '@components/Shared/Navbar/BottomNavigation';
 import getIsAuthTokensAvailable from '@lib/getIsAuthTokensAvailable';
 import getToastOptions from '@lib/getToastOptions';

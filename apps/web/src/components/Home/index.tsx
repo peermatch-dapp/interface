@@ -4,6 +4,7 @@ import ExploreFeed from '@components/Explore/Feed';
 import Footer from '@components/Shared/Footer';
 import { Mixpanel } from '@lib/mixpanel';
 import type { NextPage } from 'next';
+import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { useAppStore } from 'src/store/app';
 import { PAGEVIEW } from 'src/tracking';
@@ -20,7 +21,11 @@ import SetDefaultProfile from './SetDefaultProfile';
 import SetProfile from './SetProfile';
 import Timeline from './Timeline';
 
+const isFirstLogin = true;
+
 const Home: NextPage = () => {
+  const { push } = useRouter();
+
   const currentProfile = useAppStore((state) => state.currentProfile);
   const [feedType, setFeedType] = useState<'TIMELINE' | 'HIGHLIGHTS'>(
     'TIMELINE'
@@ -29,6 +34,12 @@ const Home: NextPage = () => {
   useEffect(() => {
     Mixpanel.track(PAGEVIEW, { page: 'home' });
   }, []);
+
+  useEffect(() => {
+    if (currentProfile && isFirstLogin) {
+      push('/registration');
+    }
+  }, [currentProfile, push]);
 
   return (
     <>
