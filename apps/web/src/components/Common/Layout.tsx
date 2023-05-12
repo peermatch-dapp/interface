@@ -5,8 +5,8 @@ import getToastOptions from '@lib/getToastOptions';
 import resetAuthData from '@lib/resetAuthData';
 import type { Profile } from 'lens';
 import { useUserProfilesQuery } from 'lens';
-import { useTheme } from 'next-themes';
 import Head from 'next/head';
+import { useTheme } from 'next-themes';
 import type { FC, ReactNode } from 'react';
 import { useEffect } from 'react';
 import { Toaster } from 'react-hot-toast';
@@ -110,7 +110,7 @@ const Layout: FC<LayoutProps> = ({ children }) => {
       <GlobalModals />
       <GlobalAlerts />
       <div className="flex min-h-screen flex-col pb-14 md:pb-0">
-        {/* <Navbar /> */}
+        {currentProfile && <Navbar />}
         <BottomNavigation />
         {children}
       </div>
