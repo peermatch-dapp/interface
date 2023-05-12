@@ -5,8 +5,8 @@ import getToastOptions from '@lib/getToastOptions';
 import resetAuthData from '@lib/resetAuthData';
 import type { Profile } from 'lens';
 import { useUserProfilesQuery } from 'lens';
-import Head from 'next/head';
 import { useTheme } from 'next-themes';
+import Head from 'next/head';
 import type { FC, ReactNode } from 'react';
 import { useEffect } from 'react';
 import { Toaster } from 'react-hot-toast';
@@ -16,7 +16,7 @@ import { useAccount, useDisconnect, useNetwork } from 'wagmi';
 
 import GlobalModals from '../Shared/GlobalModals';
 import Loading from '../Shared/Loading';
-import Navbar from '../Shared/Navbar';
+// import Navbar from '../Shared/Navbar';
 import useIsMounted from '../utils/hooks/useIsMounted';
 import { useDisconnectXmtp } from '../utils/hooks/useXmtpClient';
 
@@ -110,7 +110,7 @@ const Layout: FC<LayoutProps> = ({ children }) => {
       <GlobalModals />
       <GlobalAlerts />
       <div className="flex min-h-screen flex-col pb-14 md:pb-0">
-        <Navbar />
+        {/* <Navbar /> */}
         <BottomNavigation />
         {children}
       </div>
