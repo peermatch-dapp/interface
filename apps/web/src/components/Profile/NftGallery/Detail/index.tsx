@@ -9,7 +9,7 @@ import formatHandle from 'lib/formatHandle';
 import getAvatar from 'lib/getAvatar';
 import Link from 'next/link';
 import type { FC } from 'react';
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import Custom404 from 'src/pages/404';
 import { useAppStore } from 'src/store/app';
 import { PAGEVIEW } from 'src/tracking';
@@ -37,7 +37,7 @@ const NFTDetail: FC = () => {
             width={500}
             height={500}
             className="h-full w-full p-16"
-            src="/pride.svg"
+            src="/emoji.jpg"
             alt="nft"
             draggable={false}
           />
@@ -103,7 +103,7 @@ const NFTDetail: FC = () => {
             >
               <img
                 className="h-4 w-4"
-                src="/logo.svg"
+                src="/emoji.jpg"
                 width={10}
                 height={10}
                 alt="Lensport"
@@ -117,7 +117,7 @@ const NFTDetail: FC = () => {
             >
               <img
                 className="h-4 w-4"
-                src="/logo.svg"
+                src="/emoji.jpg"
                 width={10}
                 height={10}
                 alt="Opensea"
@@ -131,7 +131,7 @@ const NFTDetail: FC = () => {
             >
               <img
                 className="h-4 w-4"
-                src="/logo.svg"
+                src="/emoji.jpg"
                 width={10}
                 height={10}
                 alt="Rarible"
@@ -145,7 +145,7 @@ const NFTDetail: FC = () => {
             >
               <img
                 className="h-4 w-4"
-                src="/logo.svg"
+                src="/emoji.jpg"
                 width={10}
                 height={10}
                 alt="Uniswap"
@@ -159,7 +159,7 @@ const NFTDetail: FC = () => {
             >
               <img
                 className="h-4 w-4"
-                src="/logo.svg"
+                src="/emoji.jpg"
                 width={10}
                 height={10}
                 alt="Looksrare"
@@ -173,7 +173,7 @@ const NFTDetail: FC = () => {
             >
               <img
                 className="h-4 w-4"
-                src="/logo.svg"
+                src="/emoji.jpg"
                 width={10}
                 height={10}
                 alt="Etherscan"

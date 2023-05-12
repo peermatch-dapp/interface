@@ -7,7 +7,7 @@ import {
   PhotographIcon
 } from '@heroicons/react/outline';
 import { ShieldCheckIcon } from '@heroicons/react/solid';
-import { t, Trans } from '@lingui/macro';
+import { Trans, t } from '@lingui/macro';
 import { APP_NAME } from 'data/constants';
 import type { Profile } from 'lens';
 import formatAddress from 'lib/formatAddress';
@@ -41,7 +41,7 @@ const ProfileStaffTool: FC<ProfileStaffToolProps> = ({ profile }) => {
                 className="h-4 w-4"
                 height={16}
                 width={16}
-                src={hasPrideLogo(profile) ? '/pride.svg' : '/logo.svg'}
+                src={hasPrideLogo(profile) ? '/emoji.jpg' : '/emoji.jpg'}
                 alt="Logo"
               />
             }

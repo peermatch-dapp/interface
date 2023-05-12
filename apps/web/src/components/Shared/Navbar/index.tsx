@@ -98,8 +98,8 @@ const Navbar: FC = () => {
                     width={32}
                     src={
                       currentProfile && hasPrideLogo(currentProfile)
-                        ? '/pride.svg'
-                        : '/logo.svg'
+                        ? '/emoji.jpg'
+                        : '/emoji.jpg'
                     }
                     alt="Logo"
                   />
@@ -126,8 +126,8 @@ const Navbar: FC = () => {
                   width={32}
                   src={
                     currentProfile && hasPrideLogo(currentProfile)
-                      ? '/pride.svg'
-                      : '/logo.svg'
+                      ? '/emoji.jpg'
+                      : '/emoji.jpg'
                   }
                   alt="Logo"
                 />
