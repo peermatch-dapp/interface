@@ -9,6 +9,7 @@ import { useAppStore } from 'src/store/app';
 import { PAGEVIEW } from 'src/tracking';
 import { GridItemEight, GridItemFour, GridLayout } from 'ui';
 
+import LoginButton from '../Shared/Navbar/LoginButton';
 import EnableDispatcher from './EnableDispatcher';
 import EnableMessages from './EnableMessages';
 import FeedType from './FeedType';
@@ -32,32 +33,40 @@ const Home: NextPage = () => {
   return (
     <>
       <MetaTags />
-      {!currentProfile && <Hero />}
-      <GridLayout>
-        <GridItemEight className="space-y-5">
-          {currentProfile ? (
-            <>
-              <NewPost />
-              <FeedType feedType={feedType} setFeedType={setFeedType} />
-              {feedType === 'TIMELINE' ? <Timeline /> : <Highlights />}
-            </>
-          ) : (
-            <ExploreFeed />
-          )}
-        </GridItemEight>
-        <GridItemFour>
-          {currentProfile ? (
-            <>
-              <EnableDispatcher />
-              <EnableMessages />
-              <SetDefaultProfile />
-              <SetProfile />
-              <RecommendedProfiles />
-            </>
-          ) : null}
-          <Footer />
-        </GridItemFour>
-      </GridLayout>
+      {currentProfile ? (
+        <GridLayout>
+          <GridItemEight className="space-y-5">
+            {currentProfile ? (
+              <>
+                <NewPost />
+                <FeedType feedType={feedType} setFeedType={setFeedType} />
+                {feedType === 'TIMELINE' ? <Timeline /> : <Highlights />}
+              </>
+            ) : (
+              <ExploreFeed />
+            )}
+          </GridItemEight>
+          <GridItemFour>
+            {currentProfile ? (
+              <>
+                <EnableDispatcher />
+                <EnableMessages />
+                <SetDefaultProfile />
+                <SetProfile />
+                <RecommendedProfiles />
+              </>
+            ) : null}
+            <Footer />
+          </GridItemFour>
+        </GridLayout>
+      ) : (
+        <div className="flex h-screen w-screen flex-col justify-center">
+          <Hero />
+          <div className="flex justify-center">
+            <LoginButton />
+          </div>
+        </div>
+      )}
     </>
   );
 };

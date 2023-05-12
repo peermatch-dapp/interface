@@ -110,7 +110,7 @@ const Layout: FC<LayoutProps> = ({ children }) => {
       <GlobalModals />
       <GlobalAlerts />
       <div className="flex min-h-screen flex-col pb-14 md:pb-0">
-        <Navbar />
+        {currentProfile && <Navbar />}
         <BottomNavigation />
         {children}
       </div>
