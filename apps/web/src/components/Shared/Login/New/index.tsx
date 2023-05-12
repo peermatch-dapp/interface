@@ -2,7 +2,7 @@ import ChooseFile from '@components/Shared/ChooseFile';
 import { PlusIcon } from '@heroicons/react/outline';
 import { uploadFileToIPFS } from '@lib/uploadToIPFS';
 import { t, Trans } from '@lingui/macro';
-import { APP_NAME, HANDLE_REGEX, ZERO_ADDRESS } from 'data/constants';
+import { APP_NAME, ZERO_ADDRESS } from 'data/constants';
 import { RelayErrorReasons, useCreateProfileMutation } from 'lens';
 import getStampFyiURL from 'lib/getStampFyiURL';
 import type { ChangeEvent, FC } from 'react';
@@ -17,9 +17,9 @@ const newUserSchema = object({
   handle: string()
     .min(5, { message: t`Handle should be at least 5 characters` })
     .max(26, { message: t`Handle should not exceed 26 characters` })
-    .regex(HANDLE_REGEX, {
-      message: t`Handle should only contain alphanumeric characters`
-    })
+  // .regex(HANDLE_REGEX, {
+  //   message: t`Handle should only contain alphanumeric characters`
+  // })
 });
 
 interface NewProfileProps {
