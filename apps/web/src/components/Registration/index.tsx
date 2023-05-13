@@ -8,6 +8,7 @@ import Goal from './Goal';
 import Interests from './Interests';
 import ProfileType from './ProfileType';
 import Success from './Success';
+import Verify from './Verify';
 
 const Registration: NextPage = () => {
   const currentProfile = useAppStore((state) => state.currentProfile);
@@ -15,7 +16,7 @@ const Registration: NextPage = () => {
   const [currentStep, setCurrentStep] = useState(0);
 
   const flow = useMemo(
-    () => [/* Verify, */ About, Interests, Goal, ProfileType, Success],
+    () => [Verify, About, Interests, Goal, ProfileType, Success],
     []
   );
 
