@@ -23,6 +23,7 @@ const Logout: FC<LogoutProps> = ({ onClick, className = '' }) => {
   const setProfileId = useAppPersistStore((state) => state.setProfileId);
 
   const logout = () => {
+    localStorage.removeItem('IS_ONBOARDED');
     Mixpanel.track(PROFILE.LOGOUT);
     disconnectXmtp();
     setCurrentProfile(null);

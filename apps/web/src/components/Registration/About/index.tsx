@@ -148,6 +148,14 @@ const About: NextPage = ({ nextStep }: any) => {
         >
           {isLoading ? <Spinner size="sm" className="m-auto" /> : 'Next'}
         </Button>
+        <Button
+          disabled={isLoading}
+          className="w-48"
+          variant="secondary"
+          onClick={() => nextStep()}
+        >
+          Skip
+        </Button>
       </GridItemFull>
     </GridLayout>
   );
