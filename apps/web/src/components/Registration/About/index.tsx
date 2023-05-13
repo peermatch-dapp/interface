@@ -20,10 +20,10 @@ import { v4 as uuid } from 'uuid';
 import { useContractWrite, useSignTypedData } from 'wagmi';
 
 const About: NextPage = ({ nextStep }: any) => {
-  const [about, setAbout] = useState('');
-  const [isLoading, setIsLoading] = useState(false);
-
   const currentProfile = useAppStore((state) => state.currentProfile);
+
+  const [about, setAbout] = useState(currentProfile?.bio || '');
+  const [isLoading, setIsLoading] = useState(false);
 
   const canUseRelay = currentProfile?.dispatcher?.canUseRelay;
   const isSponsored = currentProfile?.dispatcher?.sponsor;
@@ -144,7 +144,7 @@ const About: NextPage = ({ nextStep }: any) => {
         <Button
           disabled={isLoading}
           className="w-48"
-          onClick={() => updateInformation()}
+          onClick={() => nextStep()}
         >
           {isLoading ? <Spinner size="sm" className="m-auto" /> : 'Next'}
         </Button>

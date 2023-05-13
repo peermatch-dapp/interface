@@ -2,10 +2,10 @@ import { gql, nodeClient } from 'lens/apollo';
 
 export const LENS_API_PROD = 'https://api.lens.dev/';
 
-const getInterests = async () => {
+const getInterests = async (profileId: string | string[]) => {
   const myInterestsQuery = gql`
     query Profile {
-      profile(request: { profileId: "0x0e29" }) {
+      profile(request: { profileId: "${profileId}" }) {
         id
         interests
       }
@@ -17,7 +17,7 @@ const getInterests = async () => {
 
   const followersQuery = gql`
     query Followers {
-      followers(request: { profileId: "0x0e29", limit: 50 }) {
+      followers(request: { profileId: "${profileId}", limit: 50 }) {
         items {
           wallet {
             address
@@ -67,7 +67,7 @@ const getInterests = async () => {
   });
   // console.log(recommandations.data.recommendedProfiles);
   for (const p of recommandations.data.recommendedProfiles) {
-    console.log(p);
+    // console.log(p);
     const commonInterests = p.interests.filter((element: any) => {
       return interests.includes(element);
     });
@@ -76,11 +76,15 @@ const getInterests = async () => {
         address: p.ownedBy,
         commonInterests,
         numberInCommon: commonInterests.length,
+        id: p.id,
         name: p.name
       });
     }
   }
-  return data;
+  const limit = 5;
+  return data
+    .sort((a: any, b: any) => b?.numberInCommon - a?.numberInCommon)
+    .slice(0, limit);
 };
 
 export default getInterests;

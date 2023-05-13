@@ -44,7 +44,7 @@ const Follow: FC<FollowProps> = ({
   followPosition,
   profileId
 }) => {
-  const { pathname } = useRouter();
+  const { pathname, push } = useRouter();
   const userSigNonce = useNonceStore((state) => state.userSigNonce);
   const setUserSigNonce = useNonceStore((state) => state.setUserSigNonce);
   const currentProfile = useAppStore((state) => state.currentProfile);
@@ -76,6 +76,10 @@ const Follow: FC<FollowProps> = ({
       ...(followPosition && { follow_position: followPosition }),
       follow_target: profile?.id
     });
+
+    if (profileId) {
+      push('/');
+    }
   };
 
   const onError = (error: any) => {
@@ -141,8 +145,7 @@ const Follow: FC<FollowProps> = ({
       return;
     }
 
-    let id;
-    profileId ? (id = profileId) : profile?.id;
+    const id = profileId || profile?.id;
 
     try {
       setIsLoading(true);

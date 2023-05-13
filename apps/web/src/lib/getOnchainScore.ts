@@ -8,7 +8,7 @@ export async function runAirstackQuery(textQuery: string) {
     ${textQuery}
   `;
   const data = await airstack.request(query);
-  console.log(data);
+  // console.log(data);
   return data;
 }
 
