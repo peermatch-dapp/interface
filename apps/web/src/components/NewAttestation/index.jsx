@@ -1,3 +1,4 @@
+import { switchNetwork } from '@wagmi/core';
 import { ethers } from 'ethers';
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
@@ -87,12 +88,17 @@ const NewAttestation = () => {
   });
   const { data, error, isError, write } = useContractWrite(config);
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => {
-    console.log(address);
-    // if (address) {
-    //   setAbout(address);
-    // }
-  }, [address]);
+    console.log('address', address);
+    if (address && chain?.id !== '420') {
+      try {
+        switchNetwork({ chainId: 420 });
+      } catch (error) {
+        console.error(console.error);
+      }
+    }
+  }, [address, chain]);
 
   useEffect(() => {
     try {
@@ -120,7 +126,8 @@ const NewAttestation = () => {
         attest = {
           about,
           key: ethers.utils.formatBytes32String(key === '' ? '0x' : key),
-          val: ethers.utils.toUtf8Bytes(val === '' ? '0x' : val)
+          // val: ethers.utils.toUtf8Bytes(val === '' ? '0x' : val)
+          val
         };
       }
       console.log(attest);

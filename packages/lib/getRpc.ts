@@ -22,6 +22,8 @@ const getRpc = (chainId: number) => {
       return polygonRpcs[Math.floor(Math.random() * polygonRpcs.length)];
     case 80001:
       return mumbaiRpcs[Math.floor(Math.random() * mumbaiRpcs.length)];
+    case 420:
+      return 'https://optimism-goerli.rpc.thirdweb.com';
     default:
       return ethereumRpcs[Math.floor(Math.random() * ethereumRpcs.length)];
   }

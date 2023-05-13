@@ -9,16 +9,16 @@ import { APP_NAME } from 'data/constants';
 import formatHandle from 'lib/formatHandle';
 import type { NextPage } from 'next';
 import type { FC } from 'react';
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { MATCH_BOT_ADDRESS } from 'src/constants';
 import Custom404 from 'src/pages/404';
 import { useAppStore } from 'src/store/app';
 import { Card, GridItemEight, GridLayout } from 'ui';
 
-import scoreData from '../../../public/score.json';
 import Composer from './Composer';
 import MessagesList from './MessagesList';
 import PreviewList from './PreviewList';
+
 interface MessageProps {
   conversationKey: string;
 }
@@ -38,6 +38,9 @@ const PeerMatchMessage: FC<MessageProps> = ({ conversationKey }) => {
   const currentProfile = useAppStore((state) => state.currentProfile);
   const { profile } = useGetProfile(currentProfile?.id, conversationKey);
 
+  const scoreRef = useRef(0);
+
+  const [isConfirm, setIsConfirm] = useState(false);
   const [messages, setMessages] = useState(defaultMessages);
   const [queryState, setQueryState] = useState({
     interests: [],
@@ -52,25 +55,19 @@ const PeerMatchMessage: FC<MessageProps> = ({ conversationKey }) => {
       url: '/api/score'
     });
 
-    console.log(scoreData.scores);
+    // console.log(scoreData.scores);
     // return {
     //   scores: Object.values(scoreData.scores)
     // };
     return response.data;
   };
 
-  const { data = {}, error } = useQuery(
-    ['scoreData'],
-    () => fetchScore().then((res) => res),
-    {
-      enabled: true
-    }
-  );
-
+  const { data = {}, error } = useQuery(['scoreData'], () => fetchScore());
   const { scores } = data as any;
 
   const sendMessage = async (message: string) => {
     if (currentProfile) {
+      // User message
       setMessages((state) => [
         {
           id: state.length + 1,
@@ -82,14 +79,31 @@ const PeerMatchMessage: FC<MessageProps> = ({ conversationKey }) => {
         ...state
       ]);
 
-      const response = await axios.post('/api/ai', {
-        state: queryState,
-        message
-      });
+      if (isConfirm) {
+        const isPositive = message.toLocaleLowerCase().includes('yes');
+        const isNegative = message.toLocaleLowerCase().includes('no');
 
-      setQueryState(response.data);
+        if (isPositive) {
+          console.log('nice');
+          setIsConfirm(false);
+          return true;
+        }
+        if (isNegative) {
+          scoreRef.current += 1;
+          setIsConfirm(false);
+        }
+      } else {
+        // AI request
+        const aiResponse = await axios.post('/api/ai', {
+          state: queryState,
+          message
+        });
 
-      if (!scores.length) {
+        // Store query state
+        setQueryState(aiResponse.data);
+      }
+
+      if (!scores?.length) {
         setMessages((state) => [
           {
             id: state.length + 1,
@@ -104,17 +118,32 @@ const PeerMatchMessage: FC<MessageProps> = ({ conversationKey }) => {
         return true;
       }
 
-      const firstResult = scores[0] || {};
+      const suggestion = scores[scoreRef.current];
 
-      console.log(firstResult);
+      if (!suggestion) {
+        setMessages((state) => [
+          {
+            id: state.length + 1,
+            messageVersion: 'v1',
+            senderAddress: MATCH_BOT_ADDRESS,
+            sent: Date.now(),
+            content: "Sorry, couldn't find any matches"
+          },
+          ...state
+        ]);
 
-      const { userDetails, commonNft, commonToken } = firstResult;
+        return true;
+      }
+
+      const { userDetails, commonNft, commonToken } = suggestion;
 
       const interests = userDetails.commonInterests.filter(
         (_: any, i: number) => i < 5
       );
       const nfts = Object.values(commonNft).filter((_, i) => i < 5);
       const tokens = Object.values(commonToken).filter((_, i) => i < 5);
+
+      // **Interests:** ${interests}
 
       setMessages((state) => [
         {
@@ -131,7 +160,7 @@ const PeerMatchMessage: FC<MessageProps> = ({ conversationKey }) => {
           sent: Date.now(),
           content: `**${userDetails.name.toLocaleUpperCase()}**
 userDetails.bio
-**Interests:** ${interests}
+
 **Tokens:** ${tokens.map(({ name }: any) => name)}
 **Nfts:** ${nfts.map(({ name }: any) => name)}
 `
@@ -145,6 +174,8 @@ userDetails.bio
         },
         ...state
       ]);
+
+      setIsConfirm(true);
     }
 
     return true;
