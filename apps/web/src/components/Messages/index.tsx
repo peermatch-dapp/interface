@@ -2,11 +2,11 @@ import MetaTags from '@components/Common/MetaTags';
 import Loading from '@components/Shared/Loading';
 import { t, Trans } from '@lingui/macro';
 import { APP_NAME } from 'data/constants';
-import type { FollowingQuery, FollowingRequest } from 'lens';
+import type { FollowingRequest } from 'lens';
 import { useFollowingQuery } from 'lens';
 import type { NextPage } from 'next';
 import { useRouter } from 'next/router';
-import { useEffect } from 'react';
+import { useCallback, useEffect } from 'react';
 import { MATCH_BOT_ADDRESS } from 'src/constants';
 import Custom404 from 'src/pages/404';
 import { useAppStore } from 'src/store/app';
@@ -52,17 +52,22 @@ const Messages: NextPage = () => {
     variables: { request },
     skip: !currentProfile?.id
   });
-  const { following: { items = [] } = {} } = data as FollowingQuery;
 
-  const isFirstLogin = !items.find(({ profile }) => {
-    return profile.ownedBy === MATCH_BOT_ADDRESS;
-  });
+  const redirectToRegistration = useCallback(async () => {
+    const { following: { items = [] } = {} } = data as any;
 
-  useEffect(() => {
+    const isFirstLogin = !items.find(({ profile }: any) => {
+      return profile.ownedBy === MATCH_BOT_ADDRESS;
+    });
+
     if (currentProfile && isFirstLogin && !loading) {
       push('/registration');
     }
-  }, [currentProfile, isFirstLogin, items, loading, push]);
+  }, [currentProfile, data, loading, push]);
+
+  useEffect(() => {
+    redirectToRegistration();
+  }, [redirectToRegistration]);
 
   if (loading) {
     return <Loading />;

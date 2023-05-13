@@ -7,6 +7,7 @@ import { APP_NAME } from 'data/constants';
 import formatHandle from 'lib/formatHandle';
 import type { NextPage } from 'next';
 import type { FC } from 'react';
+import { useState } from 'react';
 import { MATCH_BOT_ADDRESS } from 'src/constants';
 import Custom404 from 'src/pages/404';
 import { useAppStore } from 'src/store/app';
@@ -39,20 +40,37 @@ interface MessageProps {
 // static fromV2Message(message: MessageV2, content: any, // eslint-disable-line @typescript-eslint/no-explicit-any
 // contentType: ContentTypeId, contentTopic: string, contentBytes: Uint8Array, conversation: Conversation, senderAddress: string, error?: Error): DecodedMessage;
 
+const defaultMessages = [
+  {
+    id: 1,
+    messageVersion: 'v1',
+    senderAddress: MATCH_BOT_ADDRESS,
+    sent: Date.now(),
+    content:
+      "Hey there, I'm PeerMatch Bot. I'm here to help you find your perfect peer match"
+  }
+];
+
 const PeerMatchMessage: FC<MessageProps> = ({ conversationKey }) => {
   const currentProfile = useAppStore((state) => state.currentProfile);
   const { profile } = useGetProfile(currentProfile?.id, conversationKey);
 
-  const messages = [
-    {
-      id: '123',
-      messageVersion: 'v1',
-      senderAddress: MATCH_BOT_ADDRESS,
-      sent: Date.now()
-    }
-  ];
+  const [messages, setMessages] = useState(defaultMessages);
 
   const sendMessage = async (message: string) => {
+    if (currentProfile) {
+      setMessages((state) => [
+        {
+          id: state.length + 1,
+          messageVersion: 'v1',
+          senderAddress: currentProfile.ownedBy,
+          sent: Date.now(),
+          content: message
+        },
+        ...state
+      ]);
+    }
+
     return true;
   };
 
