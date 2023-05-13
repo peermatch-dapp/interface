@@ -53,7 +53,7 @@ const MessageHeader: FC<MessageHeaderProps> = ({ profile }) => {
         <Button
           className="mr-4 !px-3 !py-1.5 text-sm"
           onClick={() =>
-            router.push('/attestations?adresss=0x' + profile.ownedBy)
+            router.push('/attestations?address=' + profile.ownedBy)
           }
         >
           Attest
