@@ -1,3 +1,4 @@
+import Title from '@components/Shared/Title';
 import useStaffMode from '@components/utils/hooks/useStaffMode';
 import { Disclosure } from '@headlessui/react';
 import { SearchIcon, XIcon } from '@heroicons/react/outline';
@@ -122,6 +123,7 @@ const Navbar: FC = () => {
                   alt="Logo"
                 />
               </Link>
+              <Title>PeerMatch</Title>
               <div className="flex items-center gap-4">
                 <MenuItems />
               </div>
