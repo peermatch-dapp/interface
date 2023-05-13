@@ -24,13 +24,6 @@ export default async function handler(
     interests.map((interest) => interest.address)
   );
 
-  console.log(nftContracts);
-  console.log(tokenContracts);
-  console.log(totalCommonNfts);
-  console.log(totalCommonTokens);
-  console.log(commonNfts);
-  console.log(commonTokens);
-
   const commonInterests: Record<string, number> = {};
   const users: any = {};
   for (const i of interests) {
@@ -43,17 +36,54 @@ export default async function handler(
 
   const scores: Record<
     string,
-    { interests: number; nfts: number; tokens: number; userDetails: any }
+    {
+      interests: number;
+      commonNft: Record<string, { name: string; logo: string }>;
+      commonToken: Record<string, { name: string; logo: string }>;
+      userDetails: any;
+      nftContract: Record<string, { name: string; logo: string }>;
+      tokenContract: Record<string, { name: string; logo: string }>;
+      totalCommonNft: number;
+      totalCommonToken: number;
+      totalScore: number;
+    }
   > = {};
-  console.log();
+
   for (const address in commonInterests) {
     scores[address] = {
       interests: commonInterests[address],
-      nfts: commonNfts[address],
-      tokens: commonTokens[address],
-      userDetails: users[address]
+      commonNft: commonNfts[address],
+      commonToken: commonTokens[address],
+      userDetails: users[address],
+      nftContract: nftContracts[address],
+      tokenContract: tokenContracts[address],
+      totalCommonNft: totalCommonNfts[address],
+      totalCommonToken: totalCommonTokens[address],
+      totalScore:
+        commonInterests[address] +
+        totalCommonNfts[address] +
+        totalCommonTokens[address]
     };
   }
 
-  return res.status(200).json({ scores });
+  const scoresArray: {
+    address: string;
+    interests: number;
+    commonNft: Record<string, { name: string; logo: string }>;
+    commonToken: Record<string, { name: string; logo: string }>;
+    userDetails: any;
+    nftContract: Record<string, { name: string; logo: string }>;
+    tokenContract: Record<string, { name: string; logo: string }>;
+    totalCommonNft: number;
+    totalCommonToken: number;
+    totalScore: number;
+  }[] = [];
+
+  for (const address in scores) {
+    scoresArray.push({ address, ...scores[address] });
+  }
+
+  scoresArray.sort((a, b) => b.totalScore - a.totalScore);
+
+  return res.status(200).json({ scores: scoresArray });
 }

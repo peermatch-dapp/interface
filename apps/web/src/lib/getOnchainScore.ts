@@ -115,11 +115,20 @@ const getOnchainScore = async (
     }
   }
 
+  const totalCommonNfts: Record<string, number> = {};
+  for (const address in commonNfts) {
+    totalCommonNfts[address] = Object.keys(commonNfts[address]).length;
+  }
+  const totalCommonTokens: Record<string, number> = {};
+  for (const address in commonTokens) {
+    totalCommonTokens[address] = Object.keys(commonTokens[address]).length;
+  }
+
   return {
     nftContracts,
     tokenContracts,
-    totalCommonNfts: Object.keys(commonNfts).length,
-    totalCommonTokens: Object.keys(commonTokens).length,
+    totalCommonNfts,
+    totalCommonTokens,
     commonNfts,
     commonTokens
   };

@@ -79,6 +79,7 @@
     "shared-zustand": "^2.0.0",
     "snapshot": "workspace:*",
     "strip-markdown": "^5.0.0",
+    "styled-components": "6.0.0-rc.1",
     "ui": "workspace:*",
     "use-resize-observer": "^9.1.0",
     "uuid": "^9.0.0",
