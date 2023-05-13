@@ -74,7 +74,7 @@ const Layout: FC<LayoutProps> = ({ children }) => {
     const currentProfileAddress = currentProfile?.ownedBy;
     const isSwitchedAccount =
       currentProfileAddress !== undefined && currentProfileAddress !== address;
-    const isWrongNetworkChain = chain?.id !== CHAIN_ID;
+    const isWrongNetworkChain = false;
     const shouldLogout =
       !getIsAuthTokensAvailable() || isWrongNetworkChain || isSwitchedAccount;
 
