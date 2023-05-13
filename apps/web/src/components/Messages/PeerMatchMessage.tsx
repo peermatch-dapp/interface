@@ -14,6 +14,7 @@ import Custom404 from 'src/pages/404';
 import { useAppStore } from 'src/store/app';
 import { Card, GridItemEight, GridLayout } from 'ui';
 
+import scoreData from '../../../public/score.json';
 import Composer from './Composer';
 import MessagesList from './MessagesList';
 import PreviewList from './PreviewList';
@@ -58,14 +59,51 @@ const PeerMatchMessage: FC<MessageProps> = ({ conversationKey }) => {
         ...state
       ]);
 
-      console.log(queryState);
-
       const response = await axios.post('/api/ai', {
         state: queryState,
         message
       });
+      console.log(response.data);
 
       setQueryState(response.data);
+
+      const firstResult = Object.values(scoreData.scores)[0] || {};
+
+      const { userDetails, commonNft, commonToken } = firstResult;
+
+      const interests = userDetails.commonInterests.filter((_, i) => i < 5);
+      const nfts = Object.values(commonNft).filter((_, i) => i < 5);
+      const tokens = Object.values(commonToken).filter((_, i) => i < 5);
+
+      setMessages((state) => [
+        {
+          id: state.length + 1,
+          messageVersion: 'v1',
+          senderAddress: MATCH_BOT_ADDRESS,
+          sent: Date.now(),
+          content: 'Should I connect you with this profile?'
+        },
+        {
+          id: state.length + 1,
+          messageVersion: 'v1',
+          senderAddress: MATCH_BOT_ADDRESS,
+          sent: Date.now(),
+          content: `**${userDetails.name.toLocaleUpperCase()}**
+userDetails.bio
+**Interests:** ${interests}
+**Tokens:** ${tokens.map(({ name }) => name)}
+**Nfts:** ${nfts.map(({ name }) => name)}
+`
+        },
+        {
+          id: state.length + 1,
+          messageVersion: 'v1',
+          senderAddress: MATCH_BOT_ADDRESS,
+          sent: Date.now(),
+          content: 'Think you might like:'
+        },
+        ...state
+      ]);
     }
 
     return true;
