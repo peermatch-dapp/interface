@@ -8,7 +8,7 @@ export async function runAirstackQuery(textQuery: string) {
     ${textQuery}
   `;
   const data = await airstack.request(query);
-  console.log(data);
+  // console.log(data);
   return data;
 }
 
@@ -76,6 +76,8 @@ const getOnchainScore = async (
 
   const commonNfts: Record<string, number> = {};
   const commonTokens: Record<string, number> = {};
+  const nftsInCommon: any = {};
+  const tokensInCommon: any = {};
   for (const candidate of candidates) {
     commonNfts[candidate] = 0;
   }
@@ -83,18 +85,26 @@ const getOnchainScore = async (
     commonNfts[candidate] = 0;
     commonTokens[candidate] = 0;
     for (const contractAddress in nftContracts[requester]) {
-      commonNfts[candidate] += Number(
-        Boolean(nftContracts[candidate][contractAddress])
-      );
+      const hasCommonNfts = Boolean(nftContracts[candidate][contractAddress]);
+      if (hasCommonNfts) {
+        commonNfts[candidate] += Number(hasCommonNfts);
+        nftsInCommon[candidate] = 'TODO';
+      }
     }
     for (const contractAddress in tokenContracts[requester]) {
-      commonTokens[candidate] += Number(
-        Boolean(tokenContracts[candidate][contractAddress])
-      );
+      const hasCommonNfts = Boolean(tokenContracts[candidate][contractAddress]);
+      commonTokens[candidate] += Number(hasCommonNfts);
+      tokensInCommon[candidate] = 'TODO';
     }
   }
 
-  return { nftContracts, tokenContracts, commonNfts, commonTokens };
+  return {
+    nftContracts,
+    tokenContracts,
+    commonNfts,
+    nftsInCommon,
+    commonTokens
+  };
 };
 
 export default getOnchainScore;
