@@ -1,11 +1,11 @@
 import Title from '@components/Shared/Title';
 import type { NextPage } from 'next';
-import { Button, Card, GridItemEight, GridLayout } from 'ui';
+import { Button, Card, GridItemFull, GridLayout } from 'ui';
 
 const Goal: NextPage = ({ nextStep }: any) => {
   return (
     <GridLayout>
-      <GridItemEight>
+      <GridItemFull>
         <Title>What is your primary goal?</Title>
         <Card className="my-4 grid gap-4 p-4">
           <Button className="w-48" onClick={() => nextStep()}>
@@ -21,7 +21,7 @@ const Goal: NextPage = ({ nextStep }: any) => {
             Find your teammates
           </Button> */}
         </Card>
-      </GridItemEight>
+      </GridItemFull>
     </GridLayout>
   );
 };

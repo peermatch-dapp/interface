@@ -1,14 +1,14 @@
 import Title from '@components/Shared/Title';
 import type { NextPage } from 'next';
-import { GridItemEight, GridLayout } from 'ui';
+import { GridItemFull, GridLayout } from 'ui';
 
 const Verify: NextPage = ({ nextStep }: any) => {
   return (
     <GridLayout>
-      <GridItemEight>
+      <GridItemFull>
         <Title>Do you want to get verified?</Title>
         <button onClick={() => nextStep()}>next</button>
-      </GridItemEight>
+      </GridItemFull>
     </GridLayout>
   );
 };

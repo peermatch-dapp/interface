@@ -39,3 +39,13 @@ export const GridItemEight: FC<GridProps> = ({ children, className = '' }) => {
     </div>
   );
 };
+
+export const GridItemFull: FC<GridProps> = ({ children, className = '' }) => {
+  return (
+    <div
+      className={`col-span-12 mb-5 md:col-span-12 lg:col-span-12 ${className}`}
+    >
+      {children}
+    </div>
+  );
+};

@@ -1,12 +1,12 @@
 import Title from '@components/Shared/Title';
 import { Trans } from '@lingui/macro';
 import type { NextPage } from 'next';
-import { GridItemEight, GridLayout } from 'ui';
+import { GridItemFull, GridLayout } from 'ui';
 
 const Success: NextPage = () => {
   return (
     <GridLayout>
-      <GridItemEight>
+      <GridItemFull>
         <Title>Congratulations</Title>
 
         <Trans>
@@ -17,7 +17,7 @@ const Success: NextPage = () => {
         {/* <Button className="w-48" onClick={() => nextStep()}>
           Next
         </Button> */}
-      </GridItemEight>
+      </GridItemFull>
     </GridLayout>
   );
 };
