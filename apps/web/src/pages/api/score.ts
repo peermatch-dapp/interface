@@ -45,6 +45,7 @@ export default async function handler(
       tokenContract: Record<string, { name: string; logo: string }>;
       totalCommonNft: number;
       totalCommonToken: number;
+      totalScore: number;
     }
   > = {};
 
@@ -57,9 +58,32 @@ export default async function handler(
       nftContract: nftContracts[address],
       tokenContract: tokenContracts[address],
       totalCommonNft: totalCommonNfts[address],
-      totalCommonToken: totalCommonTokens[address]
+      totalCommonToken: totalCommonTokens[address],
+      totalScore:
+        commonInterests[address] +
+        totalCommonNfts[address] +
+        totalCommonTokens[address]
     };
   }
 
-  return res.status(200).json({ scores });
+  const scoresArray: {
+    address: string;
+    interests: number;
+    commonNft: Record<string, { name: string; logo: string }>;
+    commonToken: Record<string, { name: string; logo: string }>;
+    userDetails: any;
+    nftContract: Record<string, { name: string; logo: string }>;
+    tokenContract: Record<string, { name: string; logo: string }>;
+    totalCommonNft: number;
+    totalCommonToken: number;
+    totalScore: number;
+  }[] = [];
+
+  for (const address in scores) {
+    scoresArray.push({ address, ...scores[address] });
+  }
+
+  scoresArray.sort((a, b) => b.totalScore - a.totalScore);
+
+  return res.status(200).json({ scores: scoresArray });
 }
