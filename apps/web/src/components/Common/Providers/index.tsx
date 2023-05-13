@@ -15,7 +15,7 @@ import getRpc from 'lib/getRpc';
 import { ThemeProvider } from 'next-themes';
 import type { ReactNode } from 'react';
 import { configureChains, createConfig, WagmiConfig } from 'wagmi';
-import { mainnet, polygon, polygonMumbai } from 'wagmi/chains';
+import { mainnet, optimismGoerli, polygon, polygonMumbai } from 'wagmi/chains';
 import { InjectedConnector } from 'wagmi/connectors/injected';
 import { WalletConnectConnector } from 'wagmi/connectors/walletConnect';
 import { jsonRpcProvider } from 'wagmi/providers/jsonRpc';
@@ -28,7 +28,7 @@ import TelemetryProvider from './TelemetryProvider';
 import UserSigNoncesProvider from './UserSigNoncesProvider';
 
 const { chains, publicClient } = configureChains(
-  [IS_MAINNET ? polygon : polygonMumbai, mainnet],
+  [IS_MAINNET ? polygon : polygonMumbai, mainnet, optimismGoerli],
   [jsonRpcProvider({ rpc: (chain) => ({ http: getRpc(chain.id) }) })]
 );
 
