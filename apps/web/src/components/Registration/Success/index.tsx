@@ -1,11 +1,12 @@
 import Follow from '@components/Shared/Follow';
 import Title from '@components/Shared/Title';
 import { Trans } from '@lingui/macro';
-import { TESTNET_BOT_ID } from 'data/constants';
 import type { NextPage } from 'next';
 import { useState } from 'react';
 import { FollowSource } from 'src/tracking';
 import { GridItemFull, GridLayout } from 'ui';
+
+import { MATCH_BOT_ID } from '../../../constants';
 
 const Success: NextPage = () => {
   const [following, setFollowing] = useState<boolean | null>(null);
@@ -21,7 +22,7 @@ const Success: NextPage = () => {
         </Trans>
 
         <Follow
-          profileId={TESTNET_BOT_ID}
+          profileId={MATCH_BOT_ID}
           setFollowing={() => setFollowing(true)}
           followSource={FollowSource.ONBOARDING}
           showText
