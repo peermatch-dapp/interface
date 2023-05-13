@@ -144,7 +144,7 @@ const About: NextPage = ({ nextStep }: any) => {
         <Button
           disabled={isLoading}
           className="w-48"
-          onClick={() => updateInformation()}
+          onClick={() => nextStep()}
         >
           {isLoading ? <Spinner size="sm" className="m-auto" /> : 'Next'}
         </Button>

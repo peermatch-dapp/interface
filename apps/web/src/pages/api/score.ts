@@ -12,10 +12,24 @@ export default async function handler(
     address || '0xBD19a3F0A9CaCE18513A1e2863d648D13975CB30';
   const profileId = profile || '0x0e29';
   const interests = await getInterests(profileId);
-  const { commonNfts, commonTokens } = await getOnchainScore(
+  const {
+    nftContracts,
+    tokenContracts,
+    totalCommonNfts,
+    totalCommonTokens,
+    commonNfts,
+    commonTokens
+  } = await getOnchainScore(
     requesterId,
     interests.map((interest) => interest.address)
   );
+
+  console.log(nftContracts);
+  console.log(tokenContracts);
+  console.log(totalCommonNfts);
+  console.log(totalCommonTokens);
+  console.log(commonNfts);
+  console.log(commonTokens);
 
   const commonInterests: Record<string, number> = {};
   const users: any = {};
@@ -31,6 +45,7 @@ export default async function handler(
     string,
     { interests: number; nfts: number; tokens: number; userDetails: any }
   > = {};
+  console.log();
   for (const address in commonInterests) {
     scores[address] = {
       interests: commonInterests[address],
