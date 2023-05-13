@@ -7,7 +7,7 @@ import {
   PhotographIcon
 } from '@heroicons/react/outline';
 import { ShieldCheckIcon } from '@heroicons/react/solid';
-import { Trans, t } from '@lingui/macro';
+import { t, Trans } from '@lingui/macro';
 import { APP_NAME } from 'data/constants';
 import type { Profile } from 'lens';
 import formatAddress from 'lib/formatAddress';
