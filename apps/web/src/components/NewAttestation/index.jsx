@@ -1,6 +1,6 @@
 import { switchNetwork } from '@wagmi/core';
 import { ethers } from 'ethers';
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import {
   useAccount,
@@ -147,7 +147,7 @@ const NewAttestation = () => {
 
   return (
     <>
-      <H2>New Peermatch attestation ✅</H2>
+      <H2>New Peermatch attestation</H2>
       <AttestForm
         onSubmit={(e) => {
           e.preventDefault();
