@@ -1,7 +1,6 @@
 import styled from 'styled-components';
 
 export const H1 = styled.h1`
-  font-family: 'Rubik';
   font-style: italic;
   font-weight: 700;
   font-size: 36px;
@@ -14,8 +13,6 @@ export const H1Thin = styled(H1)`
 `;
 
 export const H2 = styled.h2`
-  font-family: 'Rubik';
-  font-style: italic;
   font-weight: 700;
   font-size: 24px;
   line-height: 32px;
@@ -27,7 +24,6 @@ export const H2Thin = styled(H2)`
 `;
 
 export const H3 = styled.h3`
-  font-family: 'Rubik';
   font-style: italic;
   font-weight: 700;
   font-size: 18px;
@@ -40,7 +36,6 @@ export const H3Thin = styled(H3)`
 `;
 
 export const Body36 = styled.p`
-  font-family: 'Rubik';
   font-style: normal;
   font-weight: 400;
   font-size: 36px;
@@ -57,7 +52,6 @@ export const Body36Bold = styled(Body36)`
 `;
 
 export const Body28 = styled.p`
-  font-family: 'Rubik';
   font-style: normal;
   font-weight: 400;
   font-size: 28px;
@@ -74,7 +68,6 @@ export const Body28Bold = styled(Body28)`
 `;
 
 export const Body24 = styled.p`
-  font-family: 'Rubik';
   font-style: normal;
   font-weight: 400;
   font-size: 24px;
@@ -92,7 +85,6 @@ export const Body24Bold = styled(Body24)`
 `;
 
 export const Body20 = styled.p`
-  font-family: 'Rubik';
   font-style: normal;
   font-weight: 400;
   font-size: 20px;
@@ -110,7 +102,6 @@ export const Body20Bold = styled(Body20)`
 `;
 
 export const Body18 = styled.p`
-  font-family: 'Rubik';
   font-style: normal;
   font-weight: 400;
   font-size: 18px;
@@ -128,7 +119,6 @@ export const Body18Bold = styled(Body18)`
 `;
 
 export const Body16 = styled.p`
-  font-family: 'Rubik';
   font-style: normal;
   font-weight: 400;
   font-size: 16px;
@@ -146,7 +136,6 @@ export const Body16Bold = styled(Body16)`
 `;
 
 export const Body14 = styled.p`
-  font-family: 'Rubik';
   font-style: normal;
   font-weight: 400;
   font-size: 14px;
@@ -164,7 +153,6 @@ export const Body14Bold = styled(Body14)`
 `;
 
 export const Body12 = styled.p`
-  font-family: 'Rubik';
   font-style: normal;
   font-weight: 400;
   font-size: 12px;
@@ -182,7 +170,6 @@ export const Body12Bold = styled(Body12)`
 `;
 
 export const Body10 = styled.p`
-  font-family: 'Rubik';
   font-style: normal;
   font-weight: 400;
   font-size: 10px;

@@ -77,7 +77,7 @@ const ReadAttestation = () => {
           />
         </FormRow>
 
-        <FormRow>
+        <FormRow display="flex">
           <FormLabel>Attestation key</FormLabel>
           <TextInput
             type="text"
