@@ -3,6 +3,7 @@ import MessageHeader from '@components/Messages/MessageHeader';
 import Loader from '@components/Shared/Loader';
 import { useGetProfile } from '@components/utils/hooks/useMessageDb';
 import { t } from '@lingui/macro';
+import axios from 'axios';
 import { APP_NAME } from 'data/constants';
 import formatHandle from 'lib/formatHandle';
 import type { NextPage } from 'next';
@@ -21,25 +22,6 @@ interface MessageProps {
   conversationKey: string;
 }
 
-// id: string;
-// messageVersion: 'v1' | 'v2';
-// senderAddress: string;
-// recipientAddress?: string;
-// sent: Date;
-// contentTopic: string;
-// conversation: Conversation;
-// contentType: ContentTypeId;
-// content: any;
-// error?: Error;
-// contentBytes: Uint8Array;
-// constructor({ id, messageVersion, senderAddress, recipientAddress, conversation, contentBytes, contentType, contentTopic, content, sent, error, }: Omit<DecodedMessage, 'toBytes'>);
-// toBytes(): Uint8Array;
-// static fromBytes(data: Uint8Array, client: Client): Promise<DecodedMessage>;
-// static fromV1Message(message: MessageV1, content: any, // eslint-disable-line @typescript-eslint/no-explicit-any
-// contentType: ContentTypeId, contentBytes: Uint8Array, contentTopic: string, conversation: Conversation, error?: Error): DecodedMessage;
-// static fromV2Message(message: MessageV2, content: any, // eslint-disable-line @typescript-eslint/no-explicit-any
-// contentType: ContentTypeId, contentTopic: string, contentBytes: Uint8Array, conversation: Conversation, senderAddress: string, error?: Error): DecodedMessage;
-
 const defaultMessages = [
   {
     id: 1,
@@ -56,6 +38,12 @@ const PeerMatchMessage: FC<MessageProps> = ({ conversationKey }) => {
   const { profile } = useGetProfile(currentProfile?.id, conversationKey);
 
   const [messages, setMessages] = useState(defaultMessages);
+  const [queryState, setQueryState] = useState({
+    interests: [],
+    notInterests: [],
+    profession: '',
+    userProfession: ''
+  });
 
   const sendMessage = async (message: string) => {
     if (currentProfile) {
@@ -69,6 +57,15 @@ const PeerMatchMessage: FC<MessageProps> = ({ conversationKey }) => {
         },
         ...state
       ]);
+
+      console.log(queryState);
+
+      const response = await axios.post('/api/ai', {
+        state: queryState,
+        message
+      });
+
+      setQueryState(response.data);
     }
 
     return true;
