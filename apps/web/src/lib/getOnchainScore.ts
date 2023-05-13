@@ -13,8 +13,11 @@ export async function runAirstackQuery(textQuery: string) {
 }
 
 async function contractsFinder(
-  nftContracts: Record<string, Record<string, string>>,
-  tokenContracts: Record<string, Record<string, string>>,
+  nftContracts: Record<string, Record<string, { name: string; logo: string }>>,
+  tokenContracts: Record<
+    string,
+    Record<string, { name: string; logo: string }>
+  >,
   addresses: string[],
   start: number
 ) {
@@ -28,6 +31,9 @@ async function contractsFinder(
           tokenAddress
           token {
             name
+            logo {
+              original
+            }
           }
           tokenType
         }
@@ -46,11 +52,15 @@ async function contractsFinder(
     if (data[username]?.TokenBalance) {
       for (const tokenBalance of data[username]?.TokenBalance) {
         if (tokenBalance.tokenType === 'ERC20') {
-          tokenContracts[address][tokenBalance?.tokenAddress] =
-            tokenBalance.token.name;
+          tokenContracts[address][tokenBalance?.tokenAddress] = {
+            name: tokenBalance.token.name,
+            logo: tokenBalance.token.logo.original
+          };
         } else {
-          nftContracts[address][tokenBalance?.tokenAddress] =
-            tokenBalance.token.name;
+          nftContracts[address][tokenBalance?.tokenAddress] = {
+            name: tokenBalance.token.name,
+            logo: tokenBalance.token.logo.original
+          };
         }
       }
     }
@@ -62,8 +72,14 @@ const getOnchainScore = async (
 ): Promise<any> => {
   const limit = 5;
   let addresses = [requester, ...candidates];
-  const nftContracts: Record<string, Record<string, string>> = {};
-  const tokenContracts: Record<string, Record<string, string>> = {};
+  const nftContracts: Record<
+    string,
+    Record<string, { name: string; logo: string }>
+  > = {};
+  const tokenContracts: Record<
+    string,
+    Record<string, { name: string; logo: string }>
+  > = {};
   for (let i = 0; i < Math.ceil(addresses.length / limit); i++) {
     const skip = i * limit;
     await contractsFinder(
@@ -74,27 +90,122 @@ const getOnchainScore = async (
     );
   }
 
-  const commonNfts: Record<string, number> = {};
-  const commonTokens: Record<string, number> = {};
+  const commonNfts: Record<
+    string,
+    Record<string, { name: string; logo: string }>
+  > = {};
+  const commonTokens: Record<
+    string,
+    Record<string, { name: string; logo: string }>
+  > = {};
   for (const candidate of candidates) {
-    commonNfts[candidate] = 0;
-  }
-  for (const candidate of candidates) {
-    commonNfts[candidate] = 0;
-    commonTokens[candidate] = 0;
+    commonNfts[candidate] = {};
+    commonTokens[candidate] = {};
     for (const contractAddress in nftContracts[requester]) {
-      commonNfts[candidate] += Number(
-        Boolean(nftContracts[candidate][contractAddress])
-      );
+      if (Boolean(nftContracts[candidate][contractAddress])) {
+        commonNfts[candidate][contractAddress] =
+          nftContracts[candidate][contractAddress];
+      }
     }
     for (const contractAddress in tokenContracts[requester]) {
-      commonTokens[candidate] += Number(
-        Boolean(tokenContracts[candidate][contractAddress])
-      );
+      if (Boolean(tokenContracts[candidate][contractAddress])) {
+        commonTokens[candidate][contractAddress] =
+          tokenContracts[candidate][contractAddress];
+      }
     }
   }
 
-  return { nftContracts, tokenContracts, commonNfts, commonTokens };
+  return {
+    nftContracts,
+    tokenContracts,
+    totalCommonNfts: Object.keys(commonNfts).length,
+    totalCommonTokens: Object.keys(commonTokens).length,
+    commonNfts,
+    commonTokens
+  };
 };
+
+const poapEndpoint = new GraphQLClient(
+  'https://api.thegraph.com/subgraphs/name/poap-xyz/poap-xdai'
+);
+
+export async function getPoaps(requester: string, candidates: string[]) {
+  const addresses = [requester, ...candidates];
+  const poaps = [];
+}
+
+export async function getAllNFTs(requester: string) {
+  const data = await runAirstackQuery(`query yashgoyal {
+    ethereum: Wallet(input: {identity: "yashgoyal.eth", blockchain: ethereum}) {
+      domains {
+        name
+        owner
+      }
+      primaryDomain {
+        name
+        owner
+      }
+      socials {
+        dappName
+        profileName
+      }
+      tokenBalances {
+        token {
+          name
+          symbol
+          address
+          blockchain
+        }
+        amount
+        tokenId
+        tokenType
+        tokenNfts {
+          tokenId
+          contentValue {
+            image {
+              original
+            }
+          }
+        }
+      }
+    }
+    polygon: Wallet(input: {identity: "yashgoyal.eth", blockchain: polygon}) {
+      domains {
+        name
+        owner
+      }
+      primaryDomain {
+        name
+        owner
+      }
+      socials {
+        dappName
+        profileName
+      }
+      tokenBalances {
+        token {
+          name
+          symbol
+          address
+          blockchain
+        }
+        amount
+        tokenId
+        tokenType
+        tokenNfts {
+          tokenId
+          contentValue {
+            image {
+              original
+            }
+          }
+        }
+      }
+    }
+  }`);
+
+  console.log(data);
+  return data;
+}
 
 export default getOnchainScore;
