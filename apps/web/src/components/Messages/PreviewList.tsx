@@ -14,7 +14,7 @@ import {
 import buildConversationId from '@lib/buildConversationId';
 import { buildConversationKey } from '@lib/conversationKey';
 import { Mixpanel } from '@lib/mixpanel';
-import { t, Trans } from '@lingui/macro';
+import { Trans, t } from '@lingui/macro';
 import clsx from 'clsx';
 import Errors from 'data/errors';
 import type { Profile } from 'lens';
@@ -192,7 +192,7 @@ const PreviewList: FC<PreviewListProps> = ({
                 isSelected={'peermatch' === selectedConversationKey}
                 profile={{
                   id: 'peermatch-bot-id',
-                  handle: 'peermatch',
+                  handle: 'peermatch.bot',
                   isDefault: true,
                   isFollowedByMe: true,
                   isFollowing: false
