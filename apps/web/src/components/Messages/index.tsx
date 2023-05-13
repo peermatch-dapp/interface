@@ -1,5 +1,7 @@
 import MetaTags from '@components/Common/MetaTags';
+import Hero from '@components/Home/Hero';
 import Loading from '@components/Shared/Loading';
+import LoginButton from '@components/Shared/Navbar/LoginButton';
 import { t, Trans } from '@lingui/macro';
 import { APP_NAME } from 'data/constants';
 import type { FollowingRequest } from 'lens';
@@ -8,7 +10,6 @@ import type { NextPage } from 'next';
 import { useRouter } from 'next/router';
 import { useCallback, useEffect } from 'react';
 import { MATCH_BOT_ADDRESS } from 'src/constants';
-import Custom404 from 'src/pages/404';
 import { useAppStore } from 'src/store/app';
 import { Card, GridItemEight, GridLayout } from 'ui';
 
@@ -74,7 +75,14 @@ const Messages: NextPage = () => {
   }
 
   if (!currentProfile) {
-    return <Custom404 />;
+    return (
+      <div className="flex h-screen w-screen flex-col justify-center">
+        <Hero />
+        <div className="flex justify-center">
+          <LoginButton />
+        </div>
+      </div>
+    );
   }
 
   return (
