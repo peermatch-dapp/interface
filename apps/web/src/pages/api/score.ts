@@ -18,7 +18,8 @@ export default async function handler(
     totalCommonNfts,
     totalCommonTokens,
     commonNfts,
-    commonTokens
+    commonTokens,
+    commonPoaps
   } = await getOnchainScore(
     requesterId,
     interests.map((interest) => interest.address)
@@ -45,6 +46,7 @@ export default async function handler(
       tokenContract: Record<string, { name: string; logo: string }>;
       totalCommonNft: number;
       totalCommonToken: number;
+      totalCommonPoaps: number;
       totalScore: number;
     }
   > = {};
@@ -59,10 +61,12 @@ export default async function handler(
       tokenContract: tokenContracts[address],
       totalCommonNft: totalCommonNfts[address],
       totalCommonToken: totalCommonTokens[address],
+      totalCommonPoaps: commonPoaps[address],
       totalScore:
         commonInterests[address] +
         totalCommonNfts[address] +
-        totalCommonTokens[address]
+        totalCommonTokens[address] +
+        commonPoaps[address]
     };
   }
 
@@ -76,6 +80,7 @@ export default async function handler(
     tokenContract: Record<string, { name: string; logo: string }>;
     totalCommonNft: number;
     totalCommonToken: number;
+    totalCommonPoaps: number;
     totalScore: number;
   }[] = [];
 

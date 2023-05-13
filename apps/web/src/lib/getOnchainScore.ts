@@ -12,6 +12,16 @@ export async function runAirstackQuery(textQuery: string) {
   return data;
 }
 
+export async function runPoapQuery(textQuery: string) {
+  // return {};
+  const query = gql`
+    ${textQuery}
+  `;
+  const data = await poapEndpoint.request(query);
+  // console.log(data);
+  return data;
+}
+
 async function contractsFinder(
   nftContracts: Record<string, Record<string, { name: string; logo: string }>>,
   tokenContracts: Record<
@@ -124,13 +134,16 @@ const getOnchainScore = async (
     totalCommonTokens[address] = Object.keys(commonTokens[address]).length;
   }
 
+  const commonPoaps = await getCommonPoaps(requester, candidates);
+
   return {
     nftContracts,
     tokenContracts,
     totalCommonNfts,
     totalCommonTokens,
     commonNfts,
-    commonTokens
+    commonTokens,
+    commonPoaps
   };
 };
 
@@ -138,83 +151,59 @@ const poapEndpoint = new GraphQLClient(
   'https://api.thegraph.com/subgraphs/name/poap-xyz/poap-xdai'
 );
 
-export async function getPoaps(requester: string, candidates: string[]) {
-  const addresses = [requester, ...candidates];
-  const poaps = [];
+export async function getPoaps(
+  addresses: string[],
+  start: number,
+  events: Record<string, Record<string, boolean>>
+) {
+  let query = `{
+    minted: account(id: "${addresses[0].toLowerCase()}") {
+      tokens(first: 1000) {
+        event {
+          id
+        }
+      }
+    }
+  }`;
+
+  const data = (await runPoapQuery(query)) as any;
+  console.log(data);
+  const username = `minted`;
+  events[addresses[0]] = {};
+
+  if (data[username]?.tokens) {
+    for (const token of data[username]?.tokens) {
+      events[addresses[0]][token.event.id] = true;
+    }
+  }
 }
 
-export async function getAllNFTs(requester: string) {
-  const data = await runAirstackQuery(`query yashgoyal {
-    ethereum: Wallet(input: {identity: "yashgoyal.eth", blockchain: ethereum}) {
-      domains {
-        name
-        owner
-      }
-      primaryDomain {
-        name
-        owner
-      }
-      socials {
-        dappName
-        profileName
-      }
-      tokenBalances {
-        token {
-          name
-          symbol
-          address
-          blockchain
-        }
-        amount
-        tokenId
-        tokenType
-        tokenNfts {
-          tokenId
-          contentValue {
-            image {
-              original
-            }
-          }
-        }
-      }
-    }
-    polygon: Wallet(input: {identity: "yashgoyal.eth", blockchain: polygon}) {
-      domains {
-        name
-        owner
-      }
-      primaryDomain {
-        name
-        owner
-      }
-      socials {
-        dappName
-        profileName
-      }
-      tokenBalances {
-        token {
-          name
-          symbol
-          address
-          blockchain
-        }
-        amount
-        tokenId
-        tokenType
-        tokenNfts {
-          tokenId
-          contentValue {
-            image {
-              original
-            }
-          }
-        }
-      }
-    }
-  }`);
+export async function getCommonPoaps(requester: string, candidates: string[]) {
+  const addresses = [requester, ...candidates];
+  const events: Record<string, Record<string, boolean>> = {};
+  const limit = 1;
 
-  console.log(data);
-  return data;
+  for (let i = 0; i < Math.ceil(addresses.length / limit); i++) {
+    const skip = i * limit;
+    await getPoaps(addresses.slice(skip, skip + limit), skip, events);
+  }
+
+  const commonEvents: Record<string, Record<string, boolean>> = {};
+  for (const candidate of candidates) {
+    commonEvents[candidate] = {};
+    for (const eventId in events[requester]) {
+      if (Boolean(events[candidate][eventId])) {
+        commonEvents[candidate][eventId] = true;
+      }
+    }
+  }
+
+  const totalCommonPoaps: Record<string, number> = {};
+  for (const address in commonEvents) {
+    totalCommonPoaps[address] = Object.keys(commonEvents[address]).length;
+  }
+
+  return totalCommonPoaps;
 }
 
 export default getOnchainScore;
