@@ -1,17 +1,15 @@
-// import { ApolloClient, gql, InMemoryCache } from '@apollo/client';
+import { gql, GraphQLClient } from 'graphql-request';
 
-// const airstack = new ApolloClient({
-//   link: 'https://api.airstack.xyz/gql',
-//   cache: new InMemoryCache()
-// });
+const airstack = new GraphQLClient('https://api.airstack.xyz/gql');
 
 export async function runAirstackQuery(textQuery: string) {
-  return {};
-  // const query = gql`
-  //   ${textQuery}
-  // `;
-  // const data = await airstack.query({ query });
-  // return data;
+  // const data = {};
+  const query = gql`
+    ${textQuery}
+  `;
+  const data = await airstack.request(query);
+  console.log(data);
+  return data;
 }
 
 async function contractsFinder(
