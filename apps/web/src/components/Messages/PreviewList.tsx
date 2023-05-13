@@ -26,14 +26,7 @@ import { useAppStore } from 'src/store/app';
 import type { TabValues } from 'src/store/message';
 import { useMessagePersistStore, useMessageStore } from 'src/store/message';
 import { MESSAGES } from 'src/tracking';
-import {
-  Card,
-  EmptyState,
-  ErrorMessage,
-  GridItemFour,
-  Modal,
-  TabButton
-} from 'ui';
+import { Card, ErrorMessage, GridItemFour, Modal, TabButton } from 'ui';
 
 import PeerMatchPreview from './PeerMatchPreview';
 
@@ -174,30 +167,34 @@ const PreviewList: FC<PreviewListProps> = ({
                 name: Errors.SomethingWentWrong
               }}
             />
-          ) : sortedProfiles.length === 0 ? (
-            <button
-              className="h-full w-full justify-items-center"
-              onClick={newMessageClick}
-              type="button"
-            >
-              <EmptyState
-                message={t`Start messaging your Lens frens`}
-                icon={<MailIcon className="text-brand h-8 w-8" />}
-                hideCard
-              />
-            </button>
           ) : (
+            // sortedProfiles.length === 0  ? (
+            //   <button
+            //     className="h-full w-full justify-items-center"
+            //     onClick={newMessageClick}
+            //     type="button"
+            //   >
+            //     <EmptyState
+            //       message={t`Start messaging your Lens frens`}
+            //       icon={<MailIcon className="text-brand h-8 w-8" />}
+            //       hideCard
+            //     />
+            //   </button>
+            // ) :
             <>
-              <PeerMatchPreview
-                isSelected={'peermatch' === selectedConversationKey}
-                profile={{
-                  id: 'peermatch-bot-id',
-                  handle: 'peermatch.bot',
-                  isDefault: true,
-                  isFollowedByMe: true,
-                  isFollowing: false
-                }}
-              />
+              {selectedTab === 'Following' && (
+                <PeerMatchPreview
+                  isSelected={'peermatch' === selectedConversationKey}
+                  profile={{
+                    id: 'peermatch-bot-id',
+                    handle: 'peermatch.bot',
+                    isDefault: true,
+                    isFollowedByMe: true,
+                    isFollowing: false
+                  }}
+                />
+              )}
+
               <Virtuoso
                 className="h-full"
                 data={sortedProfiles}
