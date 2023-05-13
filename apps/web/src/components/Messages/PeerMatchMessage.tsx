@@ -40,7 +40,6 @@ const PeerMatchMessage: FC<MessageProps> = ({ conversationKey }) => {
 
   const scoreRef = useRef(0);
 
-  const [isConfirm, setIsConfirm] = useState(false);
   const [messages, setMessages] = useState(defaultMessages);
   const [queryState, setQueryState] = useState({
     interests: [],
@@ -54,6 +53,8 @@ const PeerMatchMessage: FC<MessageProps> = ({ conversationKey }) => {
       method: 'GET',
       url: '/api/score'
     });
+
+    console.log(response);
 
     // console.log(scoreData.scores);
     // return {
@@ -79,29 +80,21 @@ const PeerMatchMessage: FC<MessageProps> = ({ conversationKey }) => {
         ...state
       ]);
 
-      if (isConfirm) {
-        const isPositive = message.toLocaleLowerCase().includes('yes');
-        const isNegative = message.toLocaleLowerCase().includes('no');
+      const isPositive = message.toLocaleLowerCase().includes('yes');
 
-        if (isPositive) {
-          console.log('nice');
-          setIsConfirm(false);
-          return true;
-        }
-        if (isNegative) {
-          scoreRef.current += 1;
-          setIsConfirm(false);
-        }
-      } else {
-        // AI request
-        const aiResponse = await axios.post('/api/ai', {
-          state: queryState,
-          message
-        });
-
-        // Store query state
-        setQueryState(aiResponse.data);
+      if (isPositive) {
+        console.log('Nice');
+        return true;
       }
+
+      // AI request
+      const aiResponse = await axios.post('/api/ai', {
+        state: queryState,
+        message
+      });
+
+      // Store query state
+      setQueryState(aiResponse.data);
 
       if (!scores?.length) {
         setMessages((state) => [
@@ -118,7 +111,26 @@ const PeerMatchMessage: FC<MessageProps> = ({ conversationKey }) => {
         return true;
       }
 
-      const suggestion = scores[scoreRef.current];
+      const { interests: aiInterests } = aiResponse.data as any;
+
+      const filteredScores = scores.filter(({ commonNft }: any) => {
+        const nftArr = Object.values(commonNft).map(({ name }: any) => name);
+
+        let valid = false;
+        for (const nft of nftArr) {
+          for (const aiInterest of aiInterests) {
+            if (
+              nft.toLowerCase().includes(aiInterest.toLowerCase()) ||
+              aiInterest.toLowerCase().includes(nft.toLowerCase())
+            ) {
+              valid = true;
+            }
+          }
+        }
+        return valid;
+      });
+
+      const suggestion = filteredScores[scoreRef.current];
 
       if (!suggestion) {
         setMessages((state) => [
@@ -135,7 +147,8 @@ const PeerMatchMessage: FC<MessageProps> = ({ conversationKey }) => {
         return true;
       }
 
-      const { userDetails, commonNft, commonToken } = suggestion;
+      const { userDetails, commonNft, commonToken, totalCommonPoaps } =
+        suggestion;
 
       const interests = userDetails.commonInterests.filter(
         (_: any, i: number) => i < 5
@@ -163,6 +176,7 @@ userDetails.bio
 
 **Tokens:** ${tokens.map(({ name }: any) => name)}
 **Nfts:** ${nfts.map(({ name }: any) => name)}
+**Poaps:** You have ${totalCommonPoaps} in common
 `
         },
         {
@@ -174,8 +188,6 @@ userDetails.bio
         },
         ...state
       ]);
-
-      setIsConfirm(true);
     }
 
     return true;

@@ -15,10 +15,11 @@ export const FormRow = styled.div`
   gap: 24px;
   width: 672px;
   height: 48px;
+  margin: 8px;
 `;
 
 export const FormLabel = styled.div`
-  font-family: 'Rubik';
+  display: flex;
   font-style: normal;
   font-weight: 500;
   margin: 0;

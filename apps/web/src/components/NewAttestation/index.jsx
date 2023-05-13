@@ -60,7 +60,7 @@ const NewAttestation = () => {
   const [attestationType, setAttestationType] = useState('custom');
   const { address } = useAccount();
   const [about, setAbout] = useState(
-    '0x16b2f56890583a38def7bc3372e170ec369fb2cb'
+    document.location.search.replace('?address=', '')
   );
   const [key, setKey] = useState('rating');
   const [hashedKey, setHashedKey] = useState('');
@@ -147,7 +147,7 @@ const NewAttestation = () => {
 
   return (
     <>
-      <H2>New attestation</H2>
+      <H2>New Peermatch attestation ✅</H2>
       <AttestForm
         onSubmit={(e) => {
           e.preventDefault();
