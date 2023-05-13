@@ -2,6 +2,7 @@ import { ethers } from 'ethers';
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import {
+  useAccount,
   useContractWrite,
   useNetwork,
   usePrepareContractWrite,
@@ -56,7 +57,7 @@ const NewAttestation = () => {
   const [etherscanBaseLink, setEtherscanBaseLink] = useState('');
 
   const [attestationType, setAttestationType] = useState('custom');
-
+  const { address } = useAccount();
   const [about, setAbout] = useState(
     '0x16b2f56890583a38def7bc3372e170ec369fb2cb'
   );
@@ -87,6 +88,13 @@ const NewAttestation = () => {
   const { data, error, isError, write } = useContractWrite(config);
 
   useEffect(() => {
+    console.log(address);
+    // if (address) {
+    //   setAbout(address);
+    // }
+  }, [address]);
+
+  useEffect(() => {
     try {
       // if (chain.name === 'Optimism') {
       //   setEtherscanBaseLink('https://optimistic.etherscan.io/tx/');
@@ -115,6 +123,7 @@ const NewAttestation = () => {
           val: ethers.utils.toUtf8Bytes(val === '' ? '0x' : val)
         };
       }
+      console.log(attest);
       setAttestation(attest);
     } catch (error_) {
       console.error(error_);
