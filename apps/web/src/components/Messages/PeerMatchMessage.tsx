@@ -2,19 +2,32 @@ import MetaTags from '@components/Common/MetaTags';
 import MessageHeader from '@components/Messages/MessageHeader';
 import Loader from '@components/Shared/Loader';
 import { useGetProfile } from '@components/utils/hooks/useMessageDb';
+import errorToast from '@lib/errorToast';
 import { t } from '@lingui/macro';
 import { useQuery } from '@tanstack/react-query';
+import { LensHub } from 'abis';
 import axios from 'axios';
-import { APP_NAME } from 'data/constants';
+import { APP_NAME, LENSHUB_PROXY } from 'data/constants';
+import {
+  useBroadcastMutation,
+  useCreateFollowTypedDataMutation,
+  useProxyActionMutation
+} from 'lens';
 import formatHandle from 'lib/formatHandle';
+import getSignature from 'lib/getSignature';
 import type { NextPage } from 'next';
+import { useRouter } from 'next/router';
 import type { FC } from 'react';
 import { useRef, useState } from 'react';
+import { toast } from 'react-hot-toast';
 import { MATCH_BOT_ADDRESS } from 'src/constants';
 import Custom404 from 'src/pages/404';
 import { useAppStore } from 'src/store/app';
+import { useNonceStore } from 'src/store/nonce';
 import { Card, GridItemEight, GridLayout } from 'ui';
+import { useContractWrite, useSignTypedData } from 'wagmi';
 
+import scoreData from '../../../public/score.json';
 import Composer from './Composer';
 import MessagesList from './MessagesList';
 import PreviewList from './PreviewList';
@@ -37,9 +50,14 @@ const defaultMessages = [
 const PeerMatchMessage: FC<MessageProps> = ({ conversationKey }) => {
   const currentProfile = useAppStore((state) => state.currentProfile);
   const { profile } = useGetProfile(currentProfile?.id, conversationKey);
+  const userSigNonce = useNonceStore((state) => state.userSigNonce);
+  const { push } = useRouter();
+
+  const setUserSigNonce = useNonceStore((state) => state.setUserSigNonce);
 
   const scoreRef = useRef(0);
 
+  const [currentSuggestion, setCurrentSuggestion] = useState<any>(null);
   const [messages, setMessages] = useState(defaultMessages);
   const [queryState, setQueryState] = useState({
     interests: [],
@@ -54,17 +72,93 @@ const PeerMatchMessage: FC<MessageProps> = ({ conversationKey }) => {
       url: '/api/score'
     });
 
-    console.log(response);
-
-    // console.log(scoreData.scores);
-    // return {
-    //   scores: Object.values(scoreData.scores)
-    // };
-    return response.data;
+    return {
+      scores: Object.values(scoreData.scores)
+    };
+    // return response.data;
   };
 
   const { data = {}, error } = useQuery(['scoreData'], () => fetchScore());
   const { scores } = data as any;
+
+  const onError = (error: any) => {
+    errorToast(error);
+  };
+
+  const onCompleted = (prop?: any) => {
+    if (currentProfile) {
+      console.log(currentSuggestion);
+      push(
+        `/messages/${currentSuggestion.userDetails.address}/lens.dev/dm/${currentSuggestion.userDetails.id}-${currentProfile.id}`
+      );
+      toast.success('Followed successfully!');
+    }
+  };
+
+  const [broadcast] = useBroadcastMutation({
+    onCompleted: ({ broadcast }) => onCompleted(broadcast.__typename)
+  });
+
+  const { signTypedDataAsync } = useSignTypedData({ onError });
+  const { write } = useContractWrite({
+    address: LENSHUB_PROXY,
+    abi: LensHub,
+    functionName: 'follow',
+    onSuccess: () => onCompleted(),
+    onError
+  });
+
+  const [createFollowTypedData] = useCreateFollowTypedDataMutation({
+    onCompleted: async ({ createFollowTypedData }) => {
+      const { id, typedData } = createFollowTypedData;
+      // TODO: Replace deep clone with right helper
+      const signature = await signTypedDataAsync(
+        getSignature(JSON.parse(JSON.stringify(typedData)))
+      );
+      setUserSigNonce(userSigNonce + 1);
+      const { data } = await broadcast({
+        variables: { request: { id, signature } }
+      });
+      if (data?.broadcast.__typename === 'RelayError') {
+        const { profileIds, datas } = typedData.value;
+        return write?.({ args: [profileIds, datas] });
+      }
+    },
+    onError
+    // update: updateCache
+  });
+
+  const [createFollowProxyAction] = useProxyActionMutation({
+    onCompleted: () => onCompleted(),
+    onError
+    // update: updateCache
+  });
+
+  const createViaProxyAction = async (variables: any) => {
+    const { data } = await createFollowProxyAction({
+      variables
+    });
+    if (!data?.proxyAction) {
+      return await createFollowTypedData({
+        variables: {
+          request: { follow: [{ profile: profile?.id }] },
+          options: { overrideSigNonce: userSigNonce }
+        }
+      });
+    }
+  };
+
+  const createFollow = async (id: string) => {
+    try {
+      return await createViaProxyAction({
+        request: {
+          follow: { freeFollow: { profileId: id } }
+        }
+      });
+    } catch (error) {
+      onError(error);
+    }
+  };
 
   const sendMessage = async (message: string) => {
     if (currentProfile) {
@@ -83,7 +177,9 @@ const PeerMatchMessage: FC<MessageProps> = ({ conversationKey }) => {
       const isPositive = message.toLocaleLowerCase().includes('yes');
 
       if (isPositive) {
-        console.log('Nice');
+        if (currentSuggestion) {
+          createFollow(currentSuggestion.userDetails.id);
+        }
         return true;
       }
 
@@ -131,6 +227,7 @@ const PeerMatchMessage: FC<MessageProps> = ({ conversationKey }) => {
       });
 
       const suggestion = filteredScores[scoreRef.current];
+      setCurrentSuggestion(suggestion);
 
       if (!suggestion) {
         setMessages((state) => [
