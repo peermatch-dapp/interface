@@ -12,8 +12,8 @@ const Hero: FC = () => {
           </div>
           <div className="text-center leading-7 text-gray-700 dark:text-gray-300">
             <Trans>
-              {APP_NAME} is a decentralized, and permissionless social media app
-              built with Lens Protocol 🌿
+              Find your new business partner in a decentralized and
+              permissionless way.
             </Trans>
           </div>
         </div>

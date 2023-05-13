@@ -3,6 +3,7 @@ import MessageHeader from '@components/Messages/MessageHeader';
 import Loader from '@components/Shared/Loader';
 import { useGetProfile } from '@components/utils/hooks/useMessageDb';
 import { t } from '@lingui/macro';
+import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
 import { APP_NAME } from 'data/constants';
 import formatHandle from 'lib/formatHandle';
@@ -14,10 +15,10 @@ import Custom404 from 'src/pages/404';
 import { useAppStore } from 'src/store/app';
 import { Card, GridItemEight, GridLayout } from 'ui';
 
+import scoreData from '../../../public/score.json';
 import Composer from './Composer';
 import MessagesList from './MessagesList';
 import PreviewList from './PreviewList';
-
 interface MessageProps {
   conversationKey: string;
 }
@@ -45,6 +46,29 @@ const PeerMatchMessage: FC<MessageProps> = ({ conversationKey }) => {
     userProfession: ''
   });
 
+  const fetchScore = async () => {
+    const response = await axios({
+      method: 'GET',
+      url: '/api/score'
+    });
+
+    console.log(scoreData.scores);
+    // return {
+    //   scores: Object.values(scoreData.scores)
+    // };
+    return response.data;
+  };
+
+  const { data = {}, error } = useQuery(
+    ['scoreData'],
+    () => fetchScore().then((res) => res),
+    {
+      enabled: true
+    }
+  );
+
+  const { scores } = data as any;
+
   const sendMessage = async (message: string) => {
     if (currentProfile) {
       setMessages((state) => [
@@ -58,14 +82,69 @@ const PeerMatchMessage: FC<MessageProps> = ({ conversationKey }) => {
         ...state
       ]);
 
-      console.log(queryState);
-
       const response = await axios.post('/api/ai', {
         state: queryState,
         message
       });
 
       setQueryState(response.data);
+
+      if (!scores.length) {
+        setMessages((state) => [
+          {
+            id: state.length + 1,
+            messageVersion: 'v1',
+            senderAddress: MATCH_BOT_ADDRESS,
+            sent: Date.now(),
+            content: "Sorry, couldn't find any matches"
+          },
+          ...state
+        ]);
+
+        return true;
+      }
+
+      const firstResult = scores[0] || {};
+
+      console.log(firstResult);
+
+      const { userDetails, commonNft, commonToken } = firstResult;
+
+      const interests = userDetails.commonInterests.filter(
+        (_: any, i: number) => i < 5
+      );
+      const nfts = Object.values(commonNft).filter((_, i) => i < 5);
+      const tokens = Object.values(commonToken).filter((_, i) => i < 5);
+
+      setMessages((state) => [
+        {
+          id: state.length + 3,
+          messageVersion: 'v1',
+          senderAddress: MATCH_BOT_ADDRESS,
+          sent: Date.now(),
+          content: 'Should I connect you with this profile?'
+        },
+        {
+          id: state.length + 2,
+          messageVersion: 'v1',
+          senderAddress: MATCH_BOT_ADDRESS,
+          sent: Date.now(),
+          content: `**${userDetails.name.toLocaleUpperCase()}**
+userDetails.bio
+**Interests:** ${interests}
+**Tokens:** ${tokens.map(({ name }: any) => name)}
+**Nfts:** ${nfts.map(({ name }: any) => name)}
+`
+        },
+        {
+          id: state.length + 1,
+          messageVersion: 'v1',
+          senderAddress: MATCH_BOT_ADDRESS,
+          sent: Date.now(),
+          content: 'Think you might like:'
+        },
+        ...state
+      ]);
     }
 
     return true;

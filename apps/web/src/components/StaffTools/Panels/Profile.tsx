@@ -7,14 +7,13 @@ import {
   PhotographIcon
 } from '@heroicons/react/outline';
 import { ShieldCheckIcon } from '@heroicons/react/solid';
-import { t, Trans } from '@lingui/macro';
+import { Trans, t } from '@lingui/macro';
 import { APP_NAME } from 'data/constants';
 import type { Profile } from 'lens';
 import formatAddress from 'lib/formatAddress';
 import formatHandle from 'lib/formatHandle';
 import getFollowModule from 'lib/getFollowModule';
 import getProfileAttribute from 'lib/getProfileAttribute';
-import hasPrideLogo from 'lib/hasPrideLogo';
 import type { FC } from 'react';
 import { Card } from 'ui';
 
@@ -41,7 +40,7 @@ const ProfileStaffTool: FC<ProfileStaffToolProps> = ({ profile }) => {
                 className="h-4 w-4"
                 height={16}
                 width={16}
-                src={hasPrideLogo(profile) ? '/emoji.jpg' : '/emoji.jpg'}
+                src={'/icon.jpg'}
                 alt="Logo"
               />
             }

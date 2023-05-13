@@ -25,9 +25,9 @@ class LensterDocument extends Document {
           <meta name="apple-mobile-web-app-title" content="Lenster" />
 
           {/* Icons */}
-          <link rel="apple-touch-icon" sizes="180x180" href="/emoji.jpg" />
-          <link rel="icon" type="image/png" sizes="32x32" href="/emoji.jpg" />
-          <link rel="icon" type="image/png" sizes="16x16" href="/emoji.jpg" />
+          <link rel="apple-touch-icon" sizes="180x180" href="/icon.jpg" />
+          <link rel="icon" type="image/png" sizes="32x32" href="/icon.jpg" />
+          <link rel="icon" type="image/png" sizes="16x16" href="/icon.jpg" />
         </Head>
         <body>
           <Main />
