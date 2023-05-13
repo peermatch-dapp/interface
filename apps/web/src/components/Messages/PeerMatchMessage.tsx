@@ -55,6 +55,8 @@ const PeerMatchMessage: FC<MessageProps> = ({ conversationKey }) => {
       url: '/api/score'
     });
 
+    console.log(response);
+
     // console.log(scoreData.scores);
     // return {
     //   scores: Object.values(scoreData.scores)
@@ -135,7 +137,8 @@ const PeerMatchMessage: FC<MessageProps> = ({ conversationKey }) => {
         return true;
       }
 
-      const { userDetails, commonNft, commonToken } = suggestion;
+      const { userDetails, commonNft, commonToken, totalCommonPoaps } =
+        suggestion;
 
       const interests = userDetails.commonInterests.filter(
         (_: any, i: number) => i < 5
@@ -163,6 +166,7 @@ userDetails.bio
 
 **Tokens:** ${tokens.map(({ name }: any) => name)}
 **Nfts:** ${nfts.map(({ name }: any) => name)}
+**Poaps:** You have ${totalCommonPoaps} in common
 `
         },
         {
