@@ -7,6 +7,7 @@ import { useFollowingQuery } from 'lens';
 import type { NextPage } from 'next';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
+import { MATCH_BOT_ADDRESS } from 'src/constants';
 import Custom404 from 'src/pages/404';
 import { useAppStore } from 'src/store/app';
 import { Card, GridItemEight, GridLayout } from 'ui';
@@ -54,15 +55,14 @@ const Messages: NextPage = () => {
   const { following: { items = [] } = {} } = data as FollowingQuery;
 
   const isFirstLogin = !items.find(({ profile }) => {
-    // return profile.ownedBy === MATCH_BOT_ADDRESS;
-    return profile.ownedBy === '0xcb0e6F3a6F65c2360bD4324f747859E780bd8FB3';
+    return profile.ownedBy === MATCH_BOT_ADDRESS;
   });
 
   useEffect(() => {
     if (currentProfile && isFirstLogin && !loading) {
       push('/registration');
     }
-  }, [currentProfile, isFirstLogin, loading, push]);
+  }, [currentProfile, isFirstLogin, items, loading, push]);
 
   if (loading) {
     return <Loading />;
