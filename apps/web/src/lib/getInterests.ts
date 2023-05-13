@@ -25,6 +25,7 @@ const getInterests = async () => {
               id
               name
               interests
+              ownedBy
             }
           }
         }
@@ -42,12 +43,42 @@ const getInterests = async () => {
         return interests.includes(element);
       }
     );
-    data.push({
-      address: item.wallet.address,
-      commonInterests,
-      numberInCommon: commonInterests.length,
-      name: item.wallet.defaultProfile.name
+    if (commonInterests.length > 0) {
+      data.push({
+        address: item.wallet.defaultProfile.ownedBy,
+        commonInterests,
+        numberInCommon: commonInterests.length,
+        name: item.wallet.defaultProfile.name
+      });
+    }
+  }
+  const recommandationsQuery = gql`
+    query RecommendedProfiles {
+      recommendedProfiles {
+        id
+        name
+        interests
+        ownedBy
+      }
+    }
+  `;
+  const recommandations = await nodeClient.query({
+    query: recommandationsQuery
+  });
+  // console.log(recommandations.data.recommendedProfiles);
+  for (const p of recommandations.data.recommendedProfiles) {
+    console.log(p);
+    const commonInterests = p.interests.filter((element: any) => {
+      return interests.includes(element);
     });
+    if (commonInterests.length > 0) {
+      data.push({
+        address: p.ownedBy,
+        commonInterests,
+        numberInCommon: commonInterests.length,
+        name: p.name
+      });
+    }
   }
   return data;
 };

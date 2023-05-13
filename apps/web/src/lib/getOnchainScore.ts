@@ -3,7 +3,7 @@ import { gql, GraphQLClient } from 'graphql-request';
 const airstack = new GraphQLClient('https://api.airstack.xyz/gql');
 
 export async function runAirstackQuery(textQuery: string) {
-  // const data = {};
+  // return {};
   const query = gql`
     ${textQuery}
   `;
