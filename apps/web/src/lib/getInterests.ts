@@ -81,7 +81,7 @@ const getInterests = async (profileId: string | string[]) => {
       });
     }
   }
-  const limit = 5;
+  const limit = 50;
   return data
     .sort((a: any, b: any) => b?.numberInCommon - a?.numberInCommon)
     .slice(0, limit);

@@ -14,7 +14,6 @@ export const PrimaryButton = styled.button`
   border-radius: 12px;
 
   /* Text/Medium 16pt · 1rem */
-  font-family: 'Rubik';
   font-style: normal;
   font-weight: 500;
   font-size: 16px;

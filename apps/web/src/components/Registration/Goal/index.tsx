@@ -12,7 +12,7 @@ const Goal: NextPage = ({ nextStep }: any) => {
             Connect with peer
           </Button>
           <Button className="w-full" onClick={() => nextStep()}>
-            Find cofounder
+            Find co-founder
           </Button>
           <Button className="w-full" onClick={() => nextStep()}>
             Find a mentor

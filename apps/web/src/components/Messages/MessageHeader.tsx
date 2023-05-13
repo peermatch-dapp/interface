@@ -7,6 +7,7 @@ import type { FC } from 'react';
 import { useCallback, useEffect, useState } from 'react';
 import { useMessageStore } from 'src/store/message';
 import { FollowSource } from 'src/tracking';
+import { Button } from 'ui';
 
 import Follow from '../Shared/Follow';
 
@@ -48,20 +49,30 @@ const MessageHeader: FC<MessageHeaderProps> = ({ profile }) => {
         />
         <UserProfile profile={profile} />
       </div>
-      {!following ? (
-        <Follow
-          showText
-          profile={profile}
-          setFollowing={setFollowingWrapped}
-          followSource={FollowSource.DIRECT_MESSAGE_HEADER}
-        />
-      ) : (
-        <Unfollow
-          showText
-          profile={profile}
-          setFollowing={setFollowingWrapped}
-        />
-      )}
+      <div className="flex">
+        <Button
+          className="mr-4 !px-3 !py-1.5 text-sm"
+          onClick={() =>
+            router.push('/attestations?address=' + profile.ownedBy)
+          }
+        >
+          Attest
+        </Button>
+        {!following ? (
+          <Follow
+            showText
+            profile={profile}
+            setFollowing={setFollowingWrapped}
+            followSource={FollowSource.DIRECT_MESSAGE_HEADER}
+          />
+        ) : (
+          <Unfollow
+            showText
+            profile={profile}
+            setFollowing={setFollowingWrapped}
+          />
+        )}
+      </div>
     </div>
   );
 };
