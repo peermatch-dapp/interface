@@ -1,7 +1,6 @@
 import { UserAddIcon } from '@heroicons/react/outline';
 import errorToast from '@lib/errorToast';
 import { Mixpanel } from '@lib/mixpanel';
-import { t } from '@lingui/macro';
 import { LensHub } from 'abis';
 import { LENSHUB_PROXY } from 'data/constants';
 import type { Profile } from 'lens';
@@ -24,7 +23,7 @@ import { Button, Spinner } from 'ui';
 import { useContractWrite, useSignTypedData } from 'wagmi';
 
 interface FollowProps {
-  profile: Profile;
+  profile?: Profile;
   setFollowing: Dispatch<boolean>;
   showText?: boolean;
   outline?: boolean;
@@ -32,6 +31,8 @@ interface FollowProps {
   // For data analytics
   followPosition?: number;
   followSource?: string;
+
+  profileId?: string;
 }
 
 const Follow: FC<FollowProps> = ({
@@ -40,7 +41,8 @@ const Follow: FC<FollowProps> = ({
   setFollowing,
   outline = true,
   followSource,
-  followPosition
+  followPosition,
+  profileId
 }) => {
   const { pathname } = useRouter();
   const userSigNonce = useNonceStore((state) => state.userSigNonce);
@@ -65,7 +67,9 @@ const Follow: FC<FollowProps> = ({
 
     setIsLoading(false);
     setFollowing(true);
-    toast.success(t`Followed successfully!`);
+    profileId
+      ? toast.success('Onboarding Complete!')
+      : toast.success('Followed successfully!');
     Mixpanel.track(PROFILE.FOLLOW, {
       follow_path: pathname,
       ...(followSource && { follow_source: followSource }),
@@ -137,6 +141,9 @@ const Follow: FC<FollowProps> = ({
       return;
     }
 
+    let id;
+    profileId ? (id = profileId) : profile?.id;
+
     try {
       setIsLoading(true);
       if (profile?.followModule) {
@@ -163,7 +170,7 @@ const Follow: FC<FollowProps> = ({
 
       return await createViaProxyAction({
         request: {
-          follow: { freeFollow: { profileId: profile?.id } }
+          follow: { freeFollow: { profileId: id } }
         }
       });
     } catch (error) {
@@ -176,13 +183,18 @@ const Follow: FC<FollowProps> = ({
       className="!px-3 !py-1.5 text-sm"
       outline={outline}
       onClick={createFollow}
-      aria-label="Follow"
+      aria-label={'Follow'}
       disabled={isLoading}
       icon={
-        isLoading ? <Spinner size="xs" /> : <UserAddIcon className="h-4 w-4" />
+        profile &&
+        (isLoading ? (
+          <Spinner size="xs" />
+        ) : (
+          <UserAddIcon className="h-4 w-4" />
+        ))
       }
     >
-      {showText && t`Follow`}
+      {showText && (profileId ? 'Finish' : 'Follow')}
     </Button>
   );
 };
