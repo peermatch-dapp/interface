@@ -58,8 +58,6 @@ const PeerMatchMessage: FC<MessageProps> = ({ conversationKey }) => {
         ...state
       ]);
 
-      console.log(queryState);
-
       const response = await axios.post('/api/ai', {
         state: queryState,
         message

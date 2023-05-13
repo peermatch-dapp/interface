@@ -341,7 +341,7 @@ const ProfileSettingsForm: FC<ProfileSettingsFormProps> = ({ profile }) => {
           </div>
           <div className="space-y-2 pt-4">
             <div className="label flex items-center space-x-2">
-              <img className="h-5 w-5" src="/emoji.jpg" alt="Pride Logo" />
+              <img className="h-5 w-5" src="/icon.jpg" alt="Pride Logo" />
               <span>
                 <Trans>Celebrate pride every day</Trans>
               </span>
