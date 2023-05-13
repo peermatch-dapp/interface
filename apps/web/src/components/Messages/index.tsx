@@ -55,11 +55,16 @@ const Messages: NextPage = () => {
   });
 
   const redirectToRegistration = useCallback(async () => {
+    const isOnboarded = localStorage.getItem('IS_ONBOARDED');
     const { following: { items = [] } = {} } = data as any;
 
     const isFirstLogin = !items.find(({ profile }: any) => {
       return profile.ownedBy === MATCH_BOT_ADDRESS;
     });
+
+    if (isOnboarded) {
+      return;
+    }
 
     if (currentProfile && isFirstLogin && !loading) {
       push('/registration');

@@ -78,6 +78,7 @@ const Follow: FC<FollowProps> = ({
     });
 
     if (profileId) {
+      localStorage.setItem('IS_ONBOARDED', 'true');
       push('/');
     }
   };
