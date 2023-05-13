@@ -2,12 +2,14 @@ import MetaTags from '@components/Common/MetaTags';
 import NewPost from '@components/Composer/Post/New';
 import ExploreFeed from '@components/Explore/Feed';
 import Footer from '@components/Shared/Footer';
-import { Mixpanel } from '@lib/mixpanel';
+import Loading from '@components/Shared/Loading';
+import type { FollowingQuery, FollowingRequest } from 'lens';
+import { useFollowingQuery } from 'lens';
 import type { NextPage } from 'next';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
+import { MATCH_BOT_ADDRESS } from 'src/constants';
 import { useAppStore } from 'src/store/app';
-import { PAGEVIEW } from 'src/tracking';
 import { GridItemEight, GridItemFour, GridLayout } from 'ui';
 
 import LoginButton from '../Shared/Navbar/LoginButton';
@@ -21,8 +23,6 @@ import SetDefaultProfile from './SetDefaultProfile';
 import SetProfile from './SetProfile';
 import Timeline from './Timeline';
 
-const isFirstLogin = true;
-
 const Home: NextPage = () => {
   const { push } = useRouter();
 
@@ -31,15 +31,36 @@ const Home: NextPage = () => {
     'TIMELINE'
   );
 
-  useEffect(() => {
-    Mixpanel.track(PAGEVIEW, { page: 'home' });
-  }, []);
+  const request: FollowingRequest = {
+    address: currentProfile?.ownedBy,
+    limit: 30
+  };
+
+  const {
+    data = {},
+    loading
+    // error,
+    // fetchMore
+  } = useFollowingQuery({
+    variables: { request },
+    skip: !currentProfile?.id
+  });
+
+  const { following: { items = [] } = {} } = data as FollowingQuery;
+
+  const isFirstLogin = !items.find(({ profile }) => {
+    return profile.ownedBy === MATCH_BOT_ADDRESS;
+  });
 
   useEffect(() => {
-    if (currentProfile && isFirstLogin) {
+    if (currentProfile && isFirstLogin && !loading) {
       push('/registration');
     }
-  }, [currentProfile, push]);
+  }, [currentProfile, isFirstLogin, loading, push]);
+
+  if (loading) {
+    return <Loading />;
+  }
 
   return (
     <>
