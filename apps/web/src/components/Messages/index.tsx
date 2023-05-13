@@ -1,12 +1,14 @@
 import MetaTags from '@components/Common/MetaTags';
-import { Mixpanel } from '@lib/mixpanel';
+import Loading from '@components/Shared/Loading';
 import { t, Trans } from '@lingui/macro';
 import { APP_NAME } from 'data/constants';
+import type { FollowingQuery, FollowingRequest } from 'lens';
+import { useFollowingQuery } from 'lens';
 import type { NextPage } from 'next';
+import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 import Custom404 from 'src/pages/404';
 import { useAppStore } from 'src/store/app';
-import { PAGEVIEW } from 'src/tracking';
 import { Card, GridItemEight, GridLayout } from 'ui';
 
 import PreviewList from './PreviewList';
@@ -31,11 +33,40 @@ const NoConversationSelected = () => {
 };
 
 const Messages: NextPage = () => {
+  const { push } = useRouter();
+
   const currentProfile = useAppStore((state) => state.currentProfile);
 
+  const request: FollowingRequest = {
+    address: currentProfile?.ownedBy,
+    limit: 30
+  };
+
+  const {
+    data = {},
+    loading
+    // error,
+    // fetchMore
+  } = useFollowingQuery({
+    variables: { request },
+    skip: !currentProfile?.id
+  });
+  const { following: { items = [] } = {} } = data as FollowingQuery;
+
+  const isFirstLogin = !items.find(({ profile }) => {
+    // return profile.ownedBy === MATCH_BOT_ADDRESS;
+    return profile.ownedBy === '0xcb0e6F3a6F65c2360bD4324f747859E780bd8FB3';
+  });
+
   useEffect(() => {
-    Mixpanel.track(PAGEVIEW, { page: 'messages' });
-  }, []);
+    if (currentProfile && isFirstLogin && !loading) {
+      push('/registration');
+    }
+  }, [currentProfile, isFirstLogin, loading, push]);
+
+  if (loading) {
+    return <Loading />;
+  }
 
   if (!currentProfile) {
     return <Custom404 />;

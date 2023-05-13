@@ -1,5 +1,3 @@
-import MessageIcon from '@components/Messages/MessageIcon';
-import NotificationIcon from '@components/Notification/NotificationIcon';
 import useStaffMode from '@components/utils/hooks/useStaffMode';
 import { Disclosure } from '@headlessui/react';
 import { SearchIcon, XIcon } from '@heroicons/react/outline';
@@ -104,14 +102,6 @@ const Navbar: FC = () => {
                     alt="Logo"
                   />
                 </Link>
-                <div className="hidden sm:ml-6 md:block">
-                  <div className="flex items-center space-x-4">
-                    <div className="hidden md:block">
-                      <Search onProfileSelected={onProfileSelected} />
-                    </div>
-                    <NavItems />
-                  </div>
-                </div>
               </div>
               <Link
                 href="/"
@@ -133,12 +123,6 @@ const Navbar: FC = () => {
                 />
               </Link>
               <div className="flex items-center gap-4">
-                {currentProfile ? (
-                  <>
-                    <MessageIcon />
-                    <NotificationIcon />
-                  </>
-                ) : null}
                 <MenuItems />
               </div>
             </div>
