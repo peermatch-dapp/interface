@@ -15,7 +15,7 @@ import type { NextPage } from 'next';
 import { useCallback, useState } from 'react';
 import toast from 'react-hot-toast';
 import { useAppStore } from 'src/store/app';
-import { Button, GridItemFull, GridLayout, TextArea } from 'ui';
+import { Button, GridItemFull, GridLayout, Spinner, TextArea } from 'ui';
 import { v4 as uuid } from 'uuid';
 import { useContractWrite, useSignTypedData } from 'wagmi';
 
@@ -136,12 +136,17 @@ const About: NextPage = ({ nextStep }: any) => {
       <GridItemFull className="m-auto flex w-full max-w-lg flex-col items-center gap-4">
         <Title>Tell us little bit about you</Title>
         <TextArea
+          rows={6}
           value={about}
           onChange={(e) => setAbout(e.target.value)}
           className="w-full"
         />
-        <Button className="w-48" onClick={() => updateInformation()}>
-          Next
+        <Button
+          disabled={isLoading}
+          className="w-48"
+          onClick={() => updateInformation()}
+        >
+          {isLoading ? <Spinner size="sm" className="m-auto" /> : 'Next'}
         </Button>
       </GridItemFull>
     </GridLayout>
