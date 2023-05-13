@@ -7,7 +7,7 @@ import ProfileInterests from '../../Settings/Interests/Interests';
 const Interests: NextPage = ({ nextStep }: any) => {
   return (
     <GridLayout>
-      <GridItemFull className="m-auto flex max-w-4xl flex-col items-center gap-4">
+      <GridItemFull className="m-auto flex w-full max-w-lg flex-col items-center gap-4">
         <Title>What are you interested in?</Title>
 
         <Card className="p-5">

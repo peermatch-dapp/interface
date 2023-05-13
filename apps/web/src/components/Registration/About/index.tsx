@@ -133,7 +133,7 @@ const About: NextPage = ({ nextStep }: any) => {
 
   return (
     <GridLayout>
-      <GridItemFull className="m-auto flex max-w-4xl flex-col items-center gap-4">
+      <GridItemFull className="m-auto flex w-full max-w-lg flex-col items-center gap-4">
         <Title>Tell us little bit about you</Title>
         <TextArea
           value={about}

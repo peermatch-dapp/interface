@@ -5,21 +5,21 @@ import { Button, Card, GridItemFull, GridLayout } from 'ui';
 const Goal: NextPage = ({ nextStep }: any) => {
   return (
     <GridLayout>
-      <GridItemFull>
+      <GridItemFull className="m-auto flex w-full max-w-lg flex-col items-center gap-4">
         <Title>What is your primary goal?</Title>
-        <Card className="my-4 grid gap-4 p-4">
-          <Button className="w-48" onClick={() => nextStep()}>
+        <Card className="my-4 grid w-full gap-4 p-4">
+          <Button className="w-full" onClick={() => nextStep()}>
             Connect with peer
           </Button>
-          {/* <Button className="w-48" onClick={() => nextStep()}>
+          <Button className="w-full" onClick={() => nextStep()}>
             Find cofounder
           </Button>
-          <Button className="w-48" onClick={() => nextStep()}>
+          <Button className="w-full" onClick={() => nextStep()}>
             Find a mentor
           </Button>
-          <Button className="w-48" onClick={() => nextStep()}>
+          <Button className="w-full" onClick={() => nextStep()}>
             Find your teammates
-          </Button> */}
+          </Button>
         </Card>
       </GridItemFull>
     </GridLayout>

@@ -6,7 +6,7 @@ import { GridItemFull, GridLayout } from 'ui';
 const Success: NextPage = () => {
   return (
     <GridLayout>
-      <GridItemFull>
+      <GridItemFull className="m-auto flex w-full max-w-lg flex-col items-center gap-4">
         <Title>Congratulations</Title>
 
         <Trans>
