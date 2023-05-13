@@ -22,6 +22,7 @@ import { Card, GridItemEight, GridLayout } from 'ui';
 
 import Composer from './Composer';
 import MessagesList from './MessagesList';
+import PeerMatchMessagePage from './PeerMatchMessage';
 import PreviewList from './PreviewList';
 
 interface MessageProps {
@@ -140,4 +141,16 @@ const MessagePage: NextPage = () => {
   return <Message conversationKey={joinedConversationKey} />;
 };
 
-export default MessagePage;
+const MessageWrapper = (props: any) => {
+  const {
+    query: { conversationKey }
+  } = useRouter();
+
+  if (conversationKey?.includes('peermatch')) {
+    return <PeerMatchMessagePage {...props} />;
+  }
+
+  return <MessagePage {...props} />;
+};
+
+export default MessageWrapper;

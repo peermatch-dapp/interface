@@ -15,23 +15,27 @@ export default async function handler(
   );
 
   const commonInterests: Record<string, number> = {};
+  const names: Record<string, number> = {};
+  for (const i of interests) {
+    names[i.address] = i.name;
+  }
   // eslint-disable-next-line unicorn/no-array-for-each
-  interests.forEach(
-    (interests) =>
-      (commonInterests[interests.address] = interests.numberInCommon)
-  );
+  interests.forEach((interests) => {
+    commonInterests[interests.address] = interests.numberInCommon;
+  });
 
   const scores: Record<
     string,
-    { interests: number; nfts: number; tokens: number }
+    { interests: number; nfts: number; tokens: number; names: any }
   > = {};
   for (const address in commonInterests) {
     scores[address] = {
       interests: commonInterests[address],
       nfts: commonNfts[address],
-      tokens: commonTokens[address]
+      tokens: commonTokens[address],
+      names: names[address]
     };
   }
 
-  return res.status(200).json({ interests });
+  return res.status(200).json({ scores });
 }

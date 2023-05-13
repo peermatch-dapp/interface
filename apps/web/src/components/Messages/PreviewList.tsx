@@ -35,6 +35,8 @@ import {
   TabButton
 } from 'ui';
 
+import PeerMatchPreview from './PeerMatchPreview';
+
 interface PreviewListProps {
   className?: string;
   selectedConversationKey?: string;
@@ -185,22 +187,34 @@ const PreviewList: FC<PreviewListProps> = ({
               />
             </button>
           ) : (
-            <Virtuoso
-              className="h-full"
-              data={sortedProfiles}
-              itemContent={(_, [key, profile]) => {
-                const message = messages.get(key);
-                return (
-                  <Preview
-                    isSelected={key === selectedConversationKey}
-                    key={key}
-                    profile={profile}
-                    conversationKey={key}
-                    message={message}
-                  />
-                );
-              }}
-            />
+            <>
+              <PeerMatchPreview
+                isSelected={'peermatch' === selectedConversationKey}
+                profile={{
+                  id: 'peermatch-bot-id',
+                  handle: 'peermatch',
+                  isDefault: true,
+                  isFollowedByMe: true,
+                  isFollowing: false
+                }}
+              />
+              <Virtuoso
+                className="h-full"
+                data={sortedProfiles}
+                itemContent={(_, [key, profile]) => {
+                  const message = messages.get(key);
+                  return (
+                    <Preview
+                      isSelected={key === selectedConversationKey}
+                      key={key}
+                      profile={profile}
+                      conversationKey={key}
+                      message={message}
+                    />
+                  );
+                }}
+              />
+            </>
           )}
         </div>
       </Card>

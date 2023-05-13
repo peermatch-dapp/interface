@@ -1,9 +1,15 @@
+import Follow from '@components/Shared/Follow';
 import Title from '@components/Shared/Title';
 import { Trans } from '@lingui/macro';
+import { TESTNET_BOT_ID } from 'data/constants';
 import type { NextPage } from 'next';
+import { useState } from 'react';
+import { FollowSource } from 'src/tracking';
 import { GridItemFull, GridLayout } from 'ui';
 
 const Success: NextPage = () => {
+  const [following, setFollowing] = useState<boolean | null>(null);
+
   return (
     <GridLayout>
       <GridItemFull className="m-auto flex w-full max-w-lg flex-col items-center gap-4">
@@ -14,9 +20,12 @@ const Success: NextPage = () => {
           peer.
         </Trans>
 
-        {/* <Button className="w-48" onClick={() => nextStep()}>
-          Next
-        </Button> */}
+        <Follow
+          profileId={TESTNET_BOT_ID}
+          setFollowing={() => setFollowing(true)}
+          followSource={FollowSource.ONBOARDING}
+          showText
+        />
       </GridItemFull>
     </GridLayout>
   );

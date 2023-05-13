@@ -1,3 +1,6 @@
-import Home from '@components/Home';
+// import Home from '@components/Home';
 
-export default Home;
+// export default Home;
+import Messages from '@components/Messages';
+
+export default Messages;
