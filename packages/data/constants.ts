@@ -46,6 +46,9 @@ export const LENSPROTOCOL_HANDLE = 'lensprotocol';
 export const HANDLE_SUFFIX = IS_MAINNET ? '.lens' : '.test';
 export const OLD_LENS_RELAYER_ADDRESS =
   '0xD1FecCF6881970105dfb2b654054174007f0e07E';
+export const TESTNET_BOT_ADDRESS = '0x42032e50DDc86E91C71F94E7C1158E5b047419dF';
+export const TESTNET_BOT_HANDLE = 'peermatch';
+export const TESTNET_BOT_ID = '0x8046';
 
 // Mixpanel
 export const MIXPANEL_TOKEN = process.env.NEXT_PUBLIC_MIXPANEL_TOKEN ?? '';

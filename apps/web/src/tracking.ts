@@ -145,5 +145,6 @@ export enum FollowSource {
   PUBLICATION_RELEVANT_PROFILES = 'publication_relevant_profiles',
   DIRECT_MESSAGE_HEADER = 'direct_message_header',
   PROFILE_PAGE = 'profile_page',
-  PROFILE_POPOVER = 'profile_popover'
+  PROFILE_POPOVER = 'profile_popover',
+  ONBOARDING = 'onboarding'
 }
