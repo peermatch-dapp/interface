@@ -126,7 +126,8 @@ const NewAttestation = () => {
         attest = {
           about,
           key: ethers.utils.formatBytes32String(key === '' ? '0x' : key),
-          val: ethers.utils.toUtf8Bytes(val === '' ? '0x' : val)
+          // val: ethers.utils.toUtf8Bytes(val === '' ? '0x' : val)
+          val
         };
       }
       console.log(attest);
