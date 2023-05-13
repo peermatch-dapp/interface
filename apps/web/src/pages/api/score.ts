@@ -33,6 +33,5 @@ export default async function handler(
     };
   }
 
-  res.json({ scores });
   return res.status(200).json({ interests });
 }
