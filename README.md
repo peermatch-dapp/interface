@@ -1,83 +1,29 @@
 <div align="center">
-    <img src="https://user-images.githubusercontent.com/69431456/183576577-2486db3f-f0a9-4252-b283-a8322e5eb8b6.png" alt="Lenster Logo">
-    <h1>Lenster</h1>
-    <strong>Decentralized, and permissionless social media app 🌿</strong>
+    <h1>PeerMatch</h1>
+    <strong>Find your new business partner in a decentralized and permissionless way.</strong>
 </div>
 <br>
-<div align="center">
-    <a href="https://lenster.xyz/u/yoginth">
-        <img src="https://lens-badge.vercel.app/api/badge/yoginth.lens" alt="Lens">
-    </a>
-    <a href="https://vercel.com/lenster?utm_source=Lenster&utm_campaign=oss">
-        <img src="https://therealsujitk-vercel-badge.vercel.app/?app=lenster" alt="Vercel">
-    </a>
-    <a href="https://deepsource.io/gh/lensterxyz/lenster">
-        <img src="https://deepsource.io/gh/lensterxyz/lenster.svg/?label=active+issues&show_trend=true" alt="GitHub actions">
-    </a>
-    <a href="https://www.gitpoap.io/gh/lensterxyz/lenster">
-        <img src="https://public-api.gitpoap.io/v1/repo/lensterxyz/lenster/badge" alt="Gitpoap">
-    </a>
-    <a href="https://translate.lenster.xyz">
-        <img src="https://badges.crowdin.net/lenster/localized.svg" alt="Crowdin">
-    </a>
-    <a href="https://status.lenster.xyz">
-        <img height="20px" src="https://betteruptime.com/status-badges/v1/monitor/dfaw.svg" alt="Uptime">
-    </a>
-    <a href="https://lenster.checklyhq.com">
-        <img src="https://api.checklyhq.com/v1/badges/checks/0f10fc23-4359-4cf9-a062-dbaa5a4cf0ea?style=flat&theme=default&responseTime=true" alt="Checkly">
-    </a>
-    <a href="https://github.com/lensterxyz/lenster/stargazers">
-        <img src="https://img.shields.io/github/stars/lensterxyz/lenster?label=Stars&logo=github" alt="Stargazers">
-    </a>
-    <a href="https://github.com/lensterxyz/lenster/blob/main/LICENSE">
-        <img src="https://img.shields.io/github/license/lensterxyz/lenster?label=Licence&logo=gnu" alt="License">
-    </a>
-    <a href="https://lenster.xyz/discord">
-        <img src="https://img.shields.io/discord/953679040722665512.svg?label=&logo=discord&logoColor=ffffff&color=7389D8&labelColor=6A7EC2" alt="Discord">
-    </a>
-    <a href="https://github.com/orgs/lensterxyz/projects/6/views/3">
-        <img src="https://img.shields.io/github/issues/lensterxyz/lenster/Bounty?color=8b5cf6&label=Bounties&logo=ethereum" alt="Bounties">
-    </a>
-</div>
-<div align="center">
-    <br>
-    <a href="https://lenster.xyz"><b>lenster.xyz »</b></a>
-    <br><br>
-    <a href="https://lenster.xyz/discord"><b>Discord</b></a>
-    •
-    <a href="https://github.com/lensterxyz/lenster/issues/new"><b>Issues</b></a>
-</div>
 
-## 🌿 About Lenster
+## Description
 
-Lenster is a cutting-edge social media application that leverages the power of [Lens Protocol](http://lens.xyz) 🌿 to create a decentralized and permissionless platform for users to interact, share, and engage with one another. With a focus on privacy, security, and user control, Lenster aims to revolutionize the social media landscape by providing a more transparent and equitable digital environment for its users.
+Peermatch is a cutting-edge AI-powered platform that helps individuals find meaningful connections in today's increasingly disconnected world. Our focus is matching users with the right peers or mentors to address work-related issues or find the perfect co-founder or team for their next project.
 
-## 📦 Environments
+Our application employs advanced AI algorithms and design features similar to dating apps. Instead of focusing on physical appearance data, we match users based on their professional background, needs, interests, and even onchain data.
 
-| Name            | Link                                |
-| --------------- | ----------------------------------- |
-| Mainnet         | https://lenster.xyz                 |
-| Testnet         | https://testnet.lenster.xyz         |
-| Staging         | https://staging.lenster.xyz         |
-| Sandbox         | https://sandbox.lenster.xyz         |
-| Staging Sandbox | https://staging-sandbox.lenster.xyz |
+At Peermatch, we understand that the right connections can profoundly impact an individual's overall wellbeing. By connecting users with the right peers, we provide valuable support for achieving personal and professional goals, as well as combating social isolation that often results from remote work.
 
-## ✅ Community
+At Peermatch, we believe you don't need thousands of Facebook friends or Twitter followers; you need only a handful of connections with the right peers.
 
-For a place to have open discussions on features, voice your ideas, or get help with general questions please visit our community at [Discord](https://lenster.xyz/discord).
+## How it's made
 
-## 📊 Repo Activity
+Our platform enhances the value of connections within the existing social graph by leveraging the LENS protocol. The OPTIMISM attestation platform is used to store the value of these connections.
 
-<img width="100%" src="https://repobeats.axiom.co/api/embed/af135d3dfdb3605cc3db676472ca174173ac2fb7.svg" alt="Repobeats analytics" />
+To find the best match, our matching algorithm combines user input, LENS, and on-chain data. We collect information from users about their background and goals, such as whether they are looking for a co-founder or want to join a team. Then, we use LENS data to understand more about their profile and enhance it further by examining their onchain data, such as DAO tokens or NFTs/POAPs, as well as their transaction and contract history using the AIRSTACK platform and THE GRAPH specifically for POAPS. This holistic approach provides a clear understanding of a person's interests, needs, and communities and increases the longevity of connections made through Peermatch.
 
-## 💕 Contributors
+Our matching interface works like a chat with our ChatGPT-powered bot, allowing users to provide immediate feedback in their own words. If they're unsatisfied with our initial suggestion, the algorithm will automatically adjust to their feedback, enabling users to fine-tune the criteria and find their ideal connection.
 
-We love contributors! Feel free to contribute to this project but please read the [Contributing Guidelines](CONTRIBUTING.md) before opening an issue or PR so you understand the branching strategy and local development environment.
+We use the OPTIMISM attestation platform to track the value of connections made on our platform, creating attestations when connections are made, users are verified on Worldcoin, successful mentorship sessions are finalized, or teams win hackathon prizes, among other instances. We have both automatic attestations triggered by an onchain event and user-triggered attestation. These attestations help enhance future matching by recommending type peer pairs with a high chance of success based on proven historical data.
 
-<a href="https://github.com/lensterxyz/lenster/graphs/contributors">
-  <img src="https://contrib.rocks/image?repo=lensterxyz/lenster" />
-</a>
-
-## ⚖️ License
+## License
 
 Lenster is open-sourced software licensed under the © [GPLv3](LICENSE).
