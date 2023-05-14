@@ -1,8 +1,8 @@
-import type { NextApiRequest, NextApiResponse } from 'next';
-
 import { ethers } from 'ethers';
+import type { NextApiRequest, NextApiResponse } from 'next';
+import type { AttestationStation } from 'src/typechain-types/AttestationStation';
+
 import AttestationStationABI from '../../constants/abi.json';
-import { AttestationStation } from 'src/typechain-types/AttestationStation';
 
 const provider = new ethers.JsonRpcProvider(
   'https://optimism-goerli.rpc.thirdweb.com'
