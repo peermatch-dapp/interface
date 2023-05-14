@@ -56,7 +56,7 @@ const MessageHeader: FC<MessageHeaderProps> = ({ profile }) => {
             router.push('/attestations?address=' + profile.ownedBy)
           }
         >
-          Attest
+          Give rating
         </Button>
         {!following ? (
           <Follow

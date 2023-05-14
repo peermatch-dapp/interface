@@ -23,8 +23,9 @@ export default async function handler(
   res: NextApiResponse
 ) {
   const { address } = req.body;
-  if (ethers.isAddress(address))
+  if (!ethers.isAddress(address)) {
     return res.status(400).json({ message: 'invalid ethereum address' });
+  }
   const key = 'world-id-verified';
   const formatedKey = ethers.encodeBytes32String(key);
   const attestation = await attestrationContract.attestations(

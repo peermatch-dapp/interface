@@ -1,10 +1,35 @@
 import Title from '@components/Shared/Title';
 import VerifyButton from '@components/VerifyButton';
 import { Trans } from '@lingui/macro';
+import axios from 'axios';
 import type { NextPage } from 'next';
+import { useEffect } from 'react';
 import { Button, GridItemFull, GridLayout } from 'ui';
+import { useAccount } from 'wagmi';
 
 const Verify: NextPage = ({ nextStep }: any) => {
+  const { address } = useAccount();
+
+  useEffect(() => {
+    if (!address) {
+      return;
+    }
+    (async () => {
+      console.log(address);
+      try {
+        const {
+          data: { status }
+        } = await axios.post('/api/check-verification', { address });
+        console.log(status);
+        if (status) {
+          nextStep();
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    })();
+  }, [address, nextStep]);
+
   return (
     <GridLayout>
       <GridItemFull className="m-auto flex w-full max-w-lg flex-col items-center gap-4">

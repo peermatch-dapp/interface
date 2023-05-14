@@ -120,12 +120,12 @@ const NewAttestation = () => {
         attest = {
           about,
           key: hashedKey,
-          val: ethers.utils.toUtf8Bytes(val === '' ? '0x' : val)
+          val: ethers.toUtf8Bytes(val === '' ? '0x' : val)
         };
       } else {
         attest = {
           about,
-          key: ethers.utils.formatBytes32String(key === '' ? '0x' : key),
+          key: ethers.encodeBytes32String(key === '' ? '0x' : key),
           // val: ethers.utils.toUtf8Bytes(val === '' ? '0x' : val)
           val
         };
@@ -135,7 +135,7 @@ const NewAttestation = () => {
     } catch (error_) {
       console.error(error_);
     }
-    setIsAboutValid(ethers.utils.isAddress(about));
+    setIsAboutValid(ethers.isAddress(about));
     // todo: make this more robust
     setIsKeyValid(key !== '');
     setIsValValid(val !== '');
@@ -198,7 +198,7 @@ const NewAttestation = () => {
                   const key = e.target.value;
                   if (key.length > 31) {
                     setKey(key);
-                    const bytesLikeKey = ethers.utils.toUtf8Bytes(key);
+                    const bytesLikeKey = ethers.toUtf8Bytes(key);
                     const keccak256HashedKey =
                       ethers.utils.keccak256(bytesLikeKey);
                     setHashedKey(keccak256HashedKey);
