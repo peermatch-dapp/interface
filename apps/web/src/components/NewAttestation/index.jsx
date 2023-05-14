@@ -147,7 +147,7 @@ const NewAttestation = () => {
 
   return (
     <>
-      <H2>New Peermatch attestation</H2>
+      <H2>Rate your experience</H2>
       <AttestForm
         onSubmit={(e) => {
           e.preventDefault();
@@ -241,7 +241,7 @@ const NewAttestation = () => {
             )}
             <FormRow>
               <FormLabel>
-                Attestation value&nbsp;
+                Rate from 1 to 5&nbsp;
                 <Tooltip>
                   <ul>
                     <li>The value that is associated with the key.</li>
