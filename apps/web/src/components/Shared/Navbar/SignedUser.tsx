@@ -21,7 +21,6 @@ import Mod from './NavItems/Mod';
 import ModMode from './NavItems/ModMode';
 import Settings from './NavItems/Settings';
 import StaffMode from './NavItems/StaffMode';
-import Status from './NavItems/Status';
 import SwitchProfile from './NavItems/SwitchProfile';
 import ThemeSwitch from './NavItems/ThemeSwitch';
 import YourProfile from './NavItems/YourProfile';
@@ -96,7 +95,7 @@ const SignedUser: FC = () => {
             >
               <SwitchProfile />
             </Menu.Item>
-            <Menu.Item
+            {/* <Menu.Item
               as="div"
               className={({ active }: { active: boolean }) =>
                 clsx(
@@ -106,7 +105,7 @@ const SignedUser: FC = () => {
               }
             >
               <Status />
-            </Menu.Item>
+            </Menu.Item> */}
             <div className="divider" />
             <Menu.Item
               as={NextLink}
