@@ -1,5 +1,6 @@
 import type { ISuccessResult } from '@worldcoin/idkit';
 import { CredentialType, IDKitWidget } from '@worldcoin/idkit';
+import { useAccount } from 'wagmi';
 
 export default function VerifyButton({
   children,
@@ -8,6 +9,8 @@ export default function VerifyButton({
   children: any;
   next: Function;
 }) {
+  const { address } = useAccount();
+
   const onSuccess = (result: ISuccessResult) => {
     // This is where you should perform frontend actions once a user has been verified, such as redirecting to a new page
     next();
@@ -20,7 +23,8 @@ export default function VerifyButton({
       proof: result.proof,
       credential_type: result.credential_type,
       action: process.env.NEXT_PUBLIC_WLD_ACTION_NAME,
-      signal: ''
+      signal: '',
+      address: address
     };
     fetch('/api/verify', {
       method: 'POST',
