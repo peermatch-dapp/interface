@@ -26,6 +26,7 @@ const getInterests = async (profileId: string | string[]) => {
               name
               interests
               ownedBy
+              bio
             }
           }
         }
@@ -59,6 +60,7 @@ const getInterests = async (profileId: string | string[]) => {
         name
         interests
         ownedBy
+        bio
       }
     }
   `;
@@ -77,7 +79,8 @@ const getInterests = async (profileId: string | string[]) => {
         commonInterests,
         numberInCommon: commonInterests.length,
         id: p.id,
-        name: p.name
+        name: p.name,
+        bio: p.bio
       });
     }
   }

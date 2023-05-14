@@ -27,7 +27,7 @@ import { useNonceStore } from 'src/store/nonce';
 import { Card, GridItemEight, GridLayout } from 'ui';
 import { useContractWrite, useSignTypedData } from 'wagmi';
 
-import scoreData from '../../../public/score.json';
+// import scoreData from '../../../public/score.json';
 import Composer from './Composer';
 import MessagesList from './MessagesList';
 import PreviewList from './PreviewList';
@@ -72,10 +72,10 @@ const PeerMatchMessage: FC<MessageProps> = ({ conversationKey }) => {
       url: '/api/score'
     });
 
-    return {
-      scores: Object.values(scoreData.scores)
-    };
-    // return response.data;
+    // return {
+    //   scores: Object.values(scoreData.scores)
+    // };
+    return response.data;
   };
 
   const { data = {}, error } = useQuery(['scoreData'], () => fetchScore());
@@ -89,7 +89,9 @@ const PeerMatchMessage: FC<MessageProps> = ({ conversationKey }) => {
     if (currentProfile) {
       console.log(currentSuggestion);
       push(
-        `/messages/${currentSuggestion.userDetails.address}/lens.dev/dm/${currentSuggestion.userDetails.id}-${currentProfile.id}`
+        `/messages/${currentSuggestion.userDetails.address.toLowerCase()}/lens.dev/dm/${
+          currentSuggestion.userDetails.id
+        }-${currentProfile.id}`
       );
       toast.success('Followed successfully!');
     }
@@ -269,8 +271,7 @@ const PeerMatchMessage: FC<MessageProps> = ({ conversationKey }) => {
           senderAddress: MATCH_BOT_ADDRESS,
           sent: Date.now(),
           content: `**${userDetails.name.toLocaleUpperCase()}**
-userDetails.bio
-
+${userDetails.bio}
 **Tokens:** ${tokens.map(({ name }: any) => name)}
 **Nfts:** ${nfts.map(({ name }: any) => name)}
 **Poaps:** You have ${totalCommonPoaps} in common
