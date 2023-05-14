@@ -5,12 +5,7 @@ import Search from '@components/Shared/Navbar/Search';
 import useGetMessagePreviews from '@components/utils/hooks/useGetMessagePreviews';
 import { useMessageDb } from '@components/utils/hooks/useMessageDb';
 import useMessagePreviews from '@components/utils/hooks/useMessagePreviews';
-import {
-  MailIcon,
-  PlusCircleIcon,
-  UserAddIcon,
-  UsersIcon
-} from '@heroicons/react/outline';
+import { MailIcon, UserAddIcon, UsersIcon } from '@heroicons/react/outline';
 import buildConversationId from '@lib/buildConversationId';
 import { buildConversationKey } from '@lib/conversationKey';
 import { Mixpanel } from '@lib/mixpanel';
@@ -109,11 +104,11 @@ const PreviewList: FC<PreviewListProps> = ({
       <Card className="flex h-full flex-col justify-between">
         <div className="divider relative flex items-center justify-between p-5">
           <div className="font-bold">Messages</div>
-          {currentProfile && !showAuthenticating && !showLoading && (
+          {/* {currentProfile && !showAuthenticating && !showLoading && (
             <button onClick={newMessageClick} type="button">
               <PlusCircleIcon className="h-6 w-6" />
             </button>
-          )}
+          )} */}
           {previewsLoading && (
             <progress
               className="absolute -bottom-1 left-0 h-1 w-full appearance-none border-none bg-transparent"
